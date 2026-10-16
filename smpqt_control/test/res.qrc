@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/pics">
+        <file>fishpond_bg_v1.png</file>
+        <file>fishpond_login_bg_v1.png</file>
+    </qresource>
+</RCC>

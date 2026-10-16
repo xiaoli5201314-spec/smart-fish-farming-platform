@@ -1,0 +1,112 @@
+/**app.wxss**/
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+} 
+
+button {
+  background: initial;
+}
+
+button:focus{
+  outline: 0;
+}
+
+button::after{
+  border: none;
+}
+
+
+page {
+  background: #f2faf6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.tap-scale {
+  transform: scale(0.96);
+  opacity: 0.88;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.tap-soft {
+  transform: translateY(3rpx) scale(0.98);
+  opacity: 0.9;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.tap-glow {
+  transform: scale(0.97);
+  opacity: 0.92;
+  filter: brightness(1.08);
+  transition: transform 0.12s ease, opacity 0.12s ease, filter 0.12s ease;
+}
+
+@keyframes mini-page-enter {
+  from {
+    opacity: 0.72;
+    transform: translateY(18rpx) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes mini-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(22rpx) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.page-motion.page-enter {
+  animation: mini-page-enter 360ms ease-out both;
+}
+
+.page-motion.page-enter .top-bar,
+.page-motion.page-enter .hero,
+.page-motion.page-enter .camera-header,
+.page-motion.page-enter .manual-header {
+  animation: mini-panel-enter 420ms ease-out both;
+}
+
+.page-motion.page-enter .industrial-strip,
+.page-motion.page-enter .assistant-card,
+.page-motion.page-enter .live-panel,
+.page-motion.page-enter .hero-card {
+  animation: mini-panel-enter 460ms ease-out 60ms both;
+}
+
+.page-motion.page-enter .hero-panel,
+.page-motion.page-enter .status-strip,
+.page-motion.page-enter .tab-row {
+  animation: mini-panel-enter 480ms ease-out 100ms both;
+}
+
+.page-motion.page-enter .showcase-panel,
+.page-motion.page-enter .control-console,
+.page-motion.page-enter .content-panel {
+  animation: mini-panel-enter 500ms ease-out 140ms both;
+}
+
+.page-motion.page-enter .section {
+  animation: mini-panel-enter 520ms ease-out 180ms both;
+}
+
+.page-motion.page-enter .metric-card,
+.page-motion.page-enter .metric-row,
+.page-motion.page-enter .system-card,
+.page-motion.page-enter .step-card,
+.page-motion.page-enter .param-card,
+.page-motion.page-enter .status-item,
+.page-motion.page-enter .hero-stat {
+  animation: mini-panel-enter 420ms ease-out 220ms both;
+}

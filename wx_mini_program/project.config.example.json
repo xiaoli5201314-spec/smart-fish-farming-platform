@@ -1,0 +1,21 @@
+{
+  "miniprogramRoot": "miniprogram/",
+  "projectname": "smart-fish-farming-platform",
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "urlCheck": true
+  },
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

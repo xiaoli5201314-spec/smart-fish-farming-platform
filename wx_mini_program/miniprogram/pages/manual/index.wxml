@@ -1,0 +1,113 @@
+<view class="page page-motion {{pageEnter ? 'page-enter' : ''}}">
+  <view class="ambient">
+    <view class="ambient-band band-a"></view>
+    <view class="ambient-band band-b"></view>
+    <view class="ambient-ripple ripple-a"></view>
+    <view class="ambient-ripple ripple-b"></view>
+    <view class="ambient-bubble bubble-a"></view>
+    <view class="ambient-bubble bubble-b"></view>
+    <view class="guide-fish fish-a">
+      <view class="fish-body"></view>
+      <view class="fish-tail"></view>
+    </view>
+    <view class="guide-fish fish-b">
+      <view class="fish-body"></view>
+      <view class="fish-tail"></view>
+    </view>
+  </view>
+
+  <view class="manual-header">
+    <view>
+      <text class="kicker">PLATFORM GUIDE</text>
+      <text class="title">使用说明</text>
+      <text class="subtitle">页面结构与关键指标</text>
+    </view>
+    <view class="manual-badge">
+      <text class="manual-badge-icon">📘</text>
+      <text>使用指南</text>
+    </view>
+  </view>
+
+  <view class="hero-card">
+    <view class="hero-scan"></view>
+    <view class="hero-wave wave-a"></view>
+    <view class="hero-wave wave-b"></view>
+    <view class="hero-pulse pulse-a"></view>
+    <view class="hero-pulse pulse-b"></view>
+    <view class="hero-copy">
+      <text class="hero-title">种鱼数智管理平台</text>
+      <text class="hero-desc">水质、分析、后端和说明四个入口统一管理。</text>
+    </view>
+    <view class="hero-stats">
+      <view class="hero-stat" wx:for="{{overviewStats}}" wx:key="label" hover-class="tap-soft" hover-stay-time="90">
+        <text class="hero-stat-value">{{item.value}}</text>
+        <text class="hero-stat-label">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="tab-row">
+    <view
+      class="tab-chip {{activeTab === item.key ? 'active' : ''}}"
+      wx:for="{{guideTabs}}"
+      wx:key="key"
+      data-key="{{item.key}}"
+      bindtap="switchTab"
+      hover-class="tap-soft"
+      hover-stay-time="90"
+    >
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab === 'overview'}}" class="content-panel">
+    <view class="section">
+      <view class="section-head">
+        <text class="section-title">系统组成</text>
+        <text class="section-note">功能模块</text>
+      </view>
+
+      <view class="system-grid">
+        <view class="system-card" wx:for="{{systemCards}}" wx:key="index" hover-class="tap-soft" hover-stay-time="90">
+          <view class="system-index">{{item.index}}</view>
+          <text class="system-title">{{item.title}}</text>
+          <text class="system-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+  <view wx:elif="{{activeTab === 'pages'}}" class="content-panel">
+    <view class="step-flow">
+      <view class="step-line"></view>
+      <view class="step-card" wx:for="{{pageSteps}}" wx:key="index" hover-class="tap-soft" hover-stay-time="90">
+        <view class="step-index">{{item.index}}</view>
+        <view class="step-copy">
+          <text class="step-title">{{item.title}}</text>
+          <text class="step-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="content-panel">
+    <view class="param-group" wx:for="{{parameterGroups}}" wx:key="title">
+      <view class="group-head">
+        <text class="group-title">{{item.title}}</text>
+        <text class="group-desc">{{item.desc}}</text>
+      </view>
+
+      <view class="param-card" wx:for="{{item.items}}" wx:for-item="param" wx:key="name" hover-class="tap-soft" hover-stay-time="90">
+        <view class="param-mark">{{param.mark}}</view>
+        <view class="param-copy">
+          <view class="param-title-row">
+            <text class="param-name">{{param.name}}</text>
+            <text class="param-tag">{{param.tag}}</text>
+          </view>
+          <text class="param-text">{{param.text}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

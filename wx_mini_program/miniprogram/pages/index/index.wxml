@@ -1,0 +1,280 @@
+<view class="page page-motion {{pageEnter ? 'page-enter' : ''}}">
+  <view class="ambient-water">
+    <view class="ambient-current current-a"></view>
+    <view class="ambient-current current-b"></view>
+    <view class="ambient-ripple ripple-a"></view>
+    <view class="ambient-ripple ripple-b"></view>
+    <view class="ambient-bubble ambient-bubble-a"></view>
+    <view class="ambient-bubble ambient-bubble-b"></view>
+    <view class="ambient-bubble ambient-bubble-c"></view>
+    <view class="ambient-fish fish-a">
+      <view class="fish-body"></view>
+      <view class="fish-tail"></view>
+      <view class="fish-fin"></view>
+    </view>
+    <view class="ambient-fish fish-b">
+      <view class="fish-body"></view>
+      <view class="fish-tail"></view>
+      <view class="fish-fin"></view>
+    </view>
+    <view class="ambient-fish fish-c">
+      <view class="fish-body"></view>
+      <view class="fish-tail"></view>
+      <view class="fish-fin"></view>
+    </view>
+  </view>
+
+  <view class="top-bar">
+    <view>
+      <text class="kicker">BROODSTOCK CENTER</text>
+      <text class="title">🔬 探头采集</text>
+    </view>
+    <view class="top-actions">
+      <button class="settings-btn" bindtap="openSettings" hover-class="tap-scale" hover-stay-time="90">设置</button>
+      <button class="logout-btn" bindtap="logout" hover-class="tap-scale" hover-stay-time="90">退出</button>
+    </view>
+  </view>
+
+  <view class="industrial-strip">
+    <view class="industrial-item {{item.tone}}" wx:for="{{industrialStatus}}" wx:key="label">
+      <view class="industrial-led"></view>
+      <view class="industrial-copy">
+        <text class="industrial-value">{{item.value}}</text>
+        <text class="industrial-label">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="hero-panel">
+    <view class="pond-meta">
+      <text class="pond-name">{{pondName}}</text>
+      <text class="pond-sub">当前账号：{{username || '未登录'}} · {{lastUpdate}}</text>
+    </view>
+
+    <view class="score-zone">
+      <view class="score-ring">
+        <text class="score-value">{{waterScore}}</text>
+        <text class="score-label">水质指数</text>
+      </view>
+      <view class="score-copy">
+        <text class="score-title">综合水质评估</text>
+        <text class="score-desc">pH、电导率、COD 与氮盐指标综合评估</text>
+      </view>
+    </view>
+
+    <view class="water-visual">
+      <view class="visual-left">
+        <view class="water-tank">
+          <view class="water-shine"></view>
+          <view class="water-scan"></view>
+          <view class="tank-fish tank-fish-a">
+            <view class="fish-body"></view>
+            <view class="fish-tail"></view>
+          </view>
+          <view class="tank-fish tank-fish-b">
+            <view class="fish-body"></view>
+            <view class="fish-tail"></view>
+          </view>
+          <view class="water-wave wave-one"></view>
+          <view class="water-wave wave-two"></view>
+          <view class="bubble bubble-a"></view>
+          <view class="bubble bubble-b"></view>
+          <view class="bubble bubble-c"></view>
+          <view class="bubble bubble-d"></view>
+          <view class="bubble bubble-e"></view>
+        </view>
+
+        <view class="micro-grid">
+          <view class="micro-card" wx:for="{{microStats}}" wx:key="label">
+            <text class="micro-value">{{item.value}}</text>
+            <text class="micro-label">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="quality-band-list">
+        <view class="quality-band" wx:for="{{qualityBands}}" wx:key="label">
+          <view class="quality-band-head">
+            <text class="quality-label">{{item.label}}</text>
+            <text class="quality-level">{{item.level}}</text>
+          </view>
+          <view class="quality-track">
+            <view class="quality-fill" style="width: {{item.percent}}%;"></view>
+          </view>
+          <text class="quality-value">{{item.value}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="hero-stats">
+      <view class="hero-stat">
+        <text class="stat-value">{{connected ? '在线' : '离线'}}</text>
+        <text class="stat-label">设备状态</text>
+      </view>
+      <view class="hero-stat">
+        <text class="stat-value">{{deviceIp}}</text>
+        <text class="stat-label">设备地址</text>
+      </view>
+      <view class="hero-stat">
+        <text class="stat-value">{{riskLevel}}</text>
+        <text class="stat-label">风险等级</text>
+      </view>
+    </view>
+
+    <view class="sampling-flow">
+      <view class="sampling-beam"></view>
+      <view class="sampling-node {{item.active ? 'active' : ''}}" wx:for="{{samplingFlow}}" wx:key="name">
+        <view class="sampling-dot"></view>
+        <text class="sampling-name">{{item.name}}</text>
+        <text class="sampling-state">{{item.state}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="showcase-panel">
+    <video
+      class="showcase-video"
+      src="{{showcaseVideo.src}}"
+      autoplay="{{true}}"
+      muted="{{true}}"
+      loop="{{true}}"
+      controls="{{false}}"
+      object-fit="cover"
+      show-center-play-btn="{{false}}"
+      show-play-btn="{{false}}"
+      show-fullscreen-btn="{{false}}"
+      enable-progress-gesture="{{false}}"
+    ></video>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">核心水质</text>
+      <text class="section-note">关键指标</text>
+    </view>
+
+    <view class="focus-grid">
+      <view
+        class="metric-card {{item.tone}}"
+        wx:for="{{focusMetrics}}"
+        wx:key="key"
+        hover-class="tap-soft"
+        hover-stay-time="90"
+      >
+        <view class="metric-top">
+          <text class="metric-name">{{item.name}}</text>
+          <text class="metric-status">{{item.status}}</text>
+        </view>
+        <view class="metric-value-row">
+          <text class="metric-value">{{item.value}}</text>
+          <text class="metric-unit">{{item.unit}}</text>
+        </view>
+        <view class="metric-progress">
+          <view class="metric-progress-fill {{item.tone}}" style="width: {{item.percent}}%;"></view>
+        </view>
+        <view class="metric-foot">
+          <text>负载 {{item.percent}}%</text>
+          <text>{{item.trend}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">氮盐指标</text>
+      <text class="section-note">氨氮、亚硝酸根、硝酸根</text>
+    </view>
+
+    <view class="compact-list">
+      <view
+        class="compact-row"
+        wx:for="{{nitrogenMetrics}}"
+        wx:key="key"
+        hover-class="tap-soft"
+        hover-stay-time="90"
+      >
+        <text class="compact-name">{{item.name}}</text>
+        <view class="compact-value-wrap">
+          <text class="compact-value">{{item.value}}</text>
+          <text class="compact-unit">{{item.unit}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section composition-section">
+    <view class="section-head">
+      <text class="section-title">水体成分</text>
+      <text class="section-note">电导、盐度、COD</text>
+    </view>
+
+    <view class="composition-grid">
+      <view
+        class="composition-card {{item.tone}}"
+        wx:for="{{compositionMetrics}}"
+        wx:key="key"
+        hover-class="tap-soft"
+        hover-stay-time="90"
+      >
+        <text class="composition-name">{{item.name}}</text>
+        <view class="composition-value-row">
+          <text class="composition-value">{{item.value}}</text>
+          <text class="composition-unit">{{item.unit}}</text>
+        </view>
+        <view class="composition-track">
+          <view class="composition-fill {{item.tone}}" style="width: {{item.percent}}%;"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section all-metrics">
+    <view class="section-head">
+      <text class="section-title">完整指标</text>
+      <text class="section-note">全量监测</text>
+    </view>
+
+    <view
+      class="table-row"
+      wx:for="{{metrics}}"
+      wx:key="key"
+    >
+      <text class="table-name">{{item.name}}</text>
+      <text class="table-value">{{item.value}} {{item.unit}}</text>
+      <text class="table-status">{{item.status}}</text>
+    </view>
+  </view>
+
+  <view class="settings-modal" wx:if="{{settingsOpen}}" bindtap="closeSettings">
+    <view class="settings-sheet" catchtap="noop">
+      <view class="settings-head">
+        <view>
+          <text class="settings-kicker">WATER ACCESS</text>
+          <text class="settings-title">水质设置</text>
+        </view>
+        <button class="settings-close" bindtap="closeSettings" hover-class="tap-scale" hover-stay-time="90">关闭</button>
+      </view>
+
+      <view class="field-card">
+        <text class="field-label">水质服务地址</text>
+        <input
+          class="field-input"
+          value="{{waterApiUrl}}"
+          placeholder="IP 或完整地址"
+          placeholder-class="field-placeholder"
+          bindinput="onWaterApiInput"
+        />
+      </view>
+
+      <view class="settings-status">
+        <text class="settings-status-label">连接状态</text>
+        <text class="settings-status-value">{{waterConfigState}}</text>
+      </view>
+
+      <view class="button-row">
+        <button class="action-btn primary" bindtap="saveWaterConfig" hover-class="tap-scale" hover-stay-time="90">保存地址</button>
+        <button class="action-btn" bindtap="testWaterConfig" hover-class="tap-scale" hover-stay-time="90">测试连接</button>
+      </view>
+    </view>
+  </view>
+</view>

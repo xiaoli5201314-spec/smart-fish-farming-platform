@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>水质网关模拟器</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">FISH FARMING / TEST TOOL</p>
+      <h1>水质网关模拟器</h1>
+      <p class="subtitle">独立模拟 pond_1、pond_2、pond_3 的 ESP32-S3 MQTT 发布</p>
+    </div>
+    <div class="top-actions">
+      <div class="broker-line"><span id="mqtt-dot" class="status-dot"></span><span id="mqtt-text">MQTT 未连接</span></div>
+      <span id="broker-text" class="broker-text">云端 MQTT</span>
+      <button id="start-all" class="button primary">启动全部</button>
+      <button id="stop-all" class="button">停止全部</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="notice" aria-label="发布提示">
+      <strong>MQTT 协议联调</strong>
+      <span>启动后向配置的 broker 发布模拟数据。同一鱼塘的模拟器与开发板应使用独立的联调环境，避免数据交替覆盖。</span>
+    </section>
+    <section id="pond-grid" class="pond-grid" aria-live="polite"></section>
+  </main>
+
+  <template id="pond-template">
+    <article class="pond-card">
+      <div class="pond-head">
+        <div>
+          <p class="pond-kicker">VIRTUAL GATEWAY</p>
+          <h2 class="pond-title"></h2>
+        </div>
+        <span class="pond-status">已停止</span>
+      </div>
+
+      <div class="pond-actions">
+        <button class="button primary start-pond">启动</button>
+        <button class="button stop-pond">停止</button>
+        <button class="button publish-now">立即发布</button>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric"><span>pH</span><strong data-value="ph">--</strong></div>
+        <div class="metric"><span>溶解氧 mg/L</span><strong data-value="doMgL">--</strong></div>
+        <div class="metric"><span>水温 C</span><strong data-value="waterTemp">--</strong></div>
+        <div class="metric"><span>主控温度 C</span><strong data-value="chipTempC">--</strong></div>
+      </div>
+
+      <div class="meta-row">
+        <span class="connection-label">网关离线</span>
+        <span>已发布 <b data-value="published">0</b> 次</span>
+        <span>上次 <b data-value="lastPublishAt">--</b></span>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-heading"><h3>模拟数据</h3><span class="topic-label"></span></div>
+        <div class="form-grid">
+          <label>模式<select data-field="sensorMode"><option value="fixed">固定值</option><option value="random">小幅随机</option><option value="zero">在线但全 0</option><option value="offline">传感器离线</option></select></label>
+          <label>发布间隔<select data-field="publishIntervalSeconds"><option value="2">2 秒</option><option value="60">1 分钟</option><option value="300">5 分钟</option><option value="1800">30 分钟</option><option value="3600">1 小时</option><option value="21600">6 小时</option><option value="86400">24 小时</option></select></label>
+          <label>pH<input data-field="ph" type="number" min="0" max="14" step="0.01"></label>
+          <label>溶解氧<input data-field="doMgL" type="number" min="0" max="20" step="0.01"></label>
+          <label>饱和度 %<input data-field="doSaturation" type="number" min="0" max="200" step="0.1"></label>
+          <label>水温 C<input data-field="waterTemp" type="number" min="-5" max="50" step="0.01"></label>
+          <label>主控温度 C<input data-field="chipTempC" type="number" min="20" max="85" step="0.1"></label>
+        </div>
+        <button class="button save-settings">保存模拟数据</button>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-heading"><h3>采集控制</h3><span class="control-label">运行中</span></div>
+        <div class="control-row">
+          <label>模式<select data-field="controlMode"><option value="run">继续采集</option><option value="pause">暂停采集</option><option value="schedule">定时采集</option></select></label>
+          <label>开始<input data-field="scheduleStart" type="time" value="08:00"></label>
+          <label>结束<input data-field="scheduleEnd" type="time" value="18:00"></label>
+          <button class="button apply-control">应用控制</button>
+        </div>
+      </div>
+
+      <div class="pond-footer"><span class="gateway-id"></span><span class="error-text"></span></div>
+    </article>
+  </template>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

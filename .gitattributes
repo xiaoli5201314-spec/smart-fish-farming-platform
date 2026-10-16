@@ -1,0 +1,3 @@
+# Preserve source bytes so the provenance hashes are stable across platforms.
+* -text
+*.png binary

@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "pages/auth/index",
+    "pages/index/index",
+    "pages/report/index",
+    "pages/camera/index",
+    "pages/manual/index",
+    "pages/camera-view/index"
+  ],
+  "window": {
+    "backgroundColor": "#F2FAF6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F2FAF6",
+    "navigationBarTitleText": "种鱼数智管理平台",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#6B8A80",
+    "selectedColor": "#0F766E",
+    "backgroundColor": "#F8FFFB",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "水质"
+      },
+      {
+        "pagePath": "pages/report/index",
+        "text": "分析"
+      },
+      {
+        "pagePath": "pages/camera/index",
+        "text": "后端"
+      },
+      {
+        "pagePath": "pages/manual/index",
+        "text": "说明"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

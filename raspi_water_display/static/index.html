@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024,height=600, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>水质数据可视化终端</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    <div class="scanline"></div>
+
+    <div class="display-shell">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark">
+                    <span></span>
+                </div>
+                <div>
+                    <h1>水质数据可视化终端</h1>
+                </div>
+            </div>
+
+            <div class="top-status">
+                <div class="status-pill" id="source-pill">
+                    <i></i>
+                    <span id="source-text">未连接</span>
+                </div>
+                <div class="clock" id="clock">--:--:--</div>
+                <button class="icon-btn" id="open-settings" title="设置 ESP32-S3 地址" aria-label="设置">
+                    <span></span>
+                </button>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <section class="panel metric-panel reveal">
+                <div class="panel-head">
+                    <div>
+                        <h2>探头采集</h2>
+                    </div>
+                    <b id="online-count">--</b>
+                </div>
+
+                <div class="metric-grid" id="metric-grid"></div>
+            </section>
+
+            <section class="center-stack">
+                <section class="panel health-panel reveal">
+                    <div class="health-orbit">
+                        <div class="outer-ticks"></div>
+                        <div class="health-ring" id="health-ring">
+                            <div class="ring-core">
+                                <span id="health-score">--</span>
+                                <em>综合指数</em>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="health-meta">
+                        <div>
+                            <span>状态</span>
+                            <strong id="health-label">等待</strong>
+                        </div>
+                        <div>
+                            <span>更新时间</span>
+                            <strong id="update-time">--</strong>
+                        </div>
+                        <div>
+                            <span>刷新</span>
+                            <strong id="poll-rate">--</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel trend-panel reveal">
+                    <div class="panel-head compact">
+                        <div>
+                            <h2>趋势曲线</h2>
+                        </div>
+                        <div class="legend">
+                            <span class="legend-health">健康</span>
+                            <span class="legend-ph">pH</span>
+                            <span class="legend-cod">COD</span>
+                        </div>
+                    </div>
+                    <canvas id="trend-canvas"></canvas>
+                </section>
+            </section>
+
+            <section class="panel risk-panel reveal">
+                <div class="panel-head">
+                    <div>
+                        <h2>指标负载</h2>
+                    </div>
+                    <b id="risk-level">--</b>
+                </div>
+
+                <div class="risk-list" id="risk-list"></div>
+
+                <div class="gateway-box">
+                    <div>
+                        <span>网关地址</span>
+                        <strong id="gateway-url">未设置</strong>
+                    </div>
+                    <div>
+                        <span>网关状态</span>
+                        <strong id="gateway-state">等待</strong>
+                    </div>
+                    <div>
+                        <span>采集周期</span>
+                        <strong id="poll-cycles">--</strong>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-backdrop" id="settings-modal" aria-hidden="true">
+        <div class="settings-panel">
+            <div class="settings-head">
+                <h2>ESP32-S3 网关设置</h2>
+                <button class="close-btn" id="close-settings" aria-label="关闭">×</button>
+            </div>
+
+            <label class="field">
+                <span>水质网关地址</span>
+                <input id="gateway-input" type="text" placeholder="例如 192.0.2.10 或 http://192.0.2.10/api/water/latest">
+            </label>
+
+            <label class="field short">
+                <span>刷新间隔</span>
+                <input id="poll-input" type="number" min="1000" max="10000" step="500">
+            </label>
+
+            <div class="settings-actions">
+                <button class="ghost-btn" id="test-gateway">测试连接</button>
+                <button class="primary-btn" id="save-settings">保存</button>
+            </div>
+
+            <div class="test-result" id="test-result">等待设置</div>
+        </div>
+    </div>
+
+    <script src="./app.js"></script>
+</body>
+</html>

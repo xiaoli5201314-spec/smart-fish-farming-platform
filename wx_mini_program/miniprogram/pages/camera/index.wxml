@@ -1,0 +1,174 @@
+<view class="page page-motion {{pageEnter ? 'page-enter' : ''}}">
+  <view class="camera-header">
+    <view class="header-actions">
+      <button class="settings-button" bindtap="openSettings" hover-class="tap-scale" hover-stay-time="90">设置</button>
+      <view class="live-pill">
+        <view class="live-dot"></view>
+        <text>{{entryState}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="live-panel gateway-panel">
+    <view class="scan-line"></view>
+    <view class="gateway-orbit">
+      <view class="orbit-ring ring-a"></view>
+      <view class="orbit-ring ring-b"></view>
+      <view class="orbit-core">LIVE</view>
+    </view>
+    <view class="gateway-copy">
+      <text class="gateway-title">实时画面</text>
+      <button class="gateway-button" bindtap="openStream" hover-class="tap-glow" hover-stay-time="90">打开实时画面</button>
+    </view>
+  </view>
+
+  <view class="status-strip">
+    <view class="status-item" wx:for="{{cameraStats}}" wx:key="label">
+      <text class="status-value">{{item.value}}</text>
+      <text class="status-label">{{item.label}}</text>
+    </view>
+  </view>
+
+  <view class="control-console">
+    <view class="console-head">
+      <view>
+        <text class="console-kicker">REMOTE CONSOLE</text>
+        <text class="console-title">现场作业控制</text>
+      </view>
+      <view class="console-state">
+        <view class="state-dot"></view>
+        <text>{{controlState}}</text>
+      </view>
+    </view>
+
+    <view class="motion-pad">
+      <view class="motion-row">
+        <button
+          class="motion-btn forward"
+          data-cmd="front"
+          data-label="渔网前进"
+          bindtap="onControlTap"
+          disabled="{{controlBusy}}"
+          hover-class="tap-glow"
+          hover-stay-time="90"
+        >
+          <text class="motion-icon">↑</text>
+          <text>渔网前进</text>
+        </button>
+      </view>
+      <view class="motion-row">
+        <button
+          class="motion-btn reverse"
+          data-cmd="reverse"
+          data-label="渔网后退"
+          bindtap="onControlTap"
+          disabled="{{controlBusy}}"
+          hover-class="tap-glow"
+          hover-stay-time="90"
+        >
+          <text class="motion-icon">↓</text>
+          <text>渔网后退</text>
+        </button>
+      </view>
+      <view class="motion-row">
+        <button
+          class="motion-btn stop"
+          data-cmd="stop"
+          data-label="立即停止"
+          bindtap="onControlTap"
+          disabled="{{controlBusy}}"
+          hover-class="tap-scale"
+          hover-stay-time="90"
+        >
+          <text class="motion-icon">■</text>
+          <text>立即停止</text>
+        </button>
+      </view>
+    </view>
+
+    <view class="control-bottom">
+      <view class="control-state-card">
+        <text class="control-state-label">渔网状态</text>
+        <text class="control-state-value">{{motionState}}</text>
+      </view>
+      <view class="control-state-card">
+        <text class="control-state-label">照明状态</text>
+        <text class="control-state-value light">{{lightState}}</text>
+      </view>
+      <view class="light-actions">
+        <button
+          class="light-btn on"
+          data-cmd="light_on"
+          data-label="开启照明"
+          bindtap="onControlTap"
+          disabled="{{controlBusy}}"
+          hover-class="tap-scale"
+          hover-stay-time="90"
+        >开启照明</button>
+        <button
+          class="light-btn off"
+          data-cmd="light_off"
+          data-label="关闭照明"
+          bindtap="onControlTap"
+          disabled="{{controlBusy}}"
+          hover-class="tap-scale"
+          hover-stay-time="90"
+        >关闭照明</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="settings-modal" wx:if="{{settingsOpen}}" bindtap="closeSettings">
+    <view class="settings-sheet" catchtap="noop">
+      <view class="settings-head">
+        <view>
+          <text class="settings-kicker">BACKEND ACCESS</text>
+          <text class="settings-title">访问设置</text>
+        </view>
+        <button class="settings-close" bindtap="closeSettings" hover-class="tap-scale" hover-stay-time="90">关闭</button>
+      </view>
+
+      <view class="field-card">
+        <text class="field-label">视频地址</text>
+        <input
+          class="field-input"
+          value="{{ipAddress}}"
+          placeholder="IP 地址"
+          placeholder-class="field-placeholder"
+          data-field="ipAddress"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="field-card">
+        <text class="field-label">视频端口</text>
+        <input
+          class="field-input"
+          value="{{port}}"
+          type="number"
+          placeholder="8080"
+          placeholder-class="field-placeholder"
+          data-field="port"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="field-card">
+        <text class="field-label">控制端口</text>
+        <input
+          class="field-input"
+          value="{{controlPort}}"
+          type="number"
+          placeholder="8090"
+          placeholder-class="field-placeholder"
+          data-field="controlPort"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="button-row">
+        <button class="action-btn primary save-only" bindtap="saveCameraConfig" hover-class="tap-scale" hover-stay-time="90">保存地址</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,78 @@
+<view class="auth-page">
+  <view class="brand-block">
+    <text class="brand-kicker">BROODSTOCK PLATFORM</text>
+    <text class="brand-title">种鱼数智管理平台</text>
+    <view class="brand-line"></view>
+  </view>
+
+  <view class="auth-panel">
+    <view class="mode-switch">
+      <view
+        class="mode-item {{mode === 'login' ? 'active' : ''}}"
+        data-mode="login"
+        bindtap="switchMode"
+        hover-class="tap-scale"
+        hover-stay-time="90"
+      >
+        登录
+      </view>
+      <view
+        class="mode-item {{mode === 'register' ? 'active' : ''}}"
+        data-mode="register"
+        bindtap="switchMode"
+        hover-class="tap-scale"
+        hover-stay-time="90"
+      >
+        注册
+      </view>
+    </view>
+
+    <view class="field-group">
+      <text class="field-label">账号</text>
+      <input
+        class="field-input"
+        placeholder="请输入账号"
+        placeholder-class="field-placeholder"
+        value="{{username}}"
+        bindinput="onInput"
+        data-field="username"
+      />
+    </view>
+
+    <view class="field-group">
+      <text class="field-label">密码</text>
+      <input
+        class="field-input"
+        password="{{true}}"
+        placeholder="请输入密码"
+        placeholder-class="field-placeholder"
+        value="{{password}}"
+        bindinput="onInput"
+        data-field="password"
+      />
+    </view>
+
+    <view wx:if="{{mode === 'register'}}" class="field-group">
+      <text class="field-label">确认密码</text>
+      <input
+        class="field-input"
+        password="{{true}}"
+        placeholder="请再次输入密码"
+        placeholder-class="field-placeholder"
+        value="{{confirmPassword}}"
+        bindinput="onInput"
+        data-field="confirmPassword"
+      />
+    </view>
+
+    <button
+      class="submit-btn"
+      bindtap="submit"
+      loading="{{loading}}"
+      hover-class="tap-glow"
+      hover-stay-time="90"
+    >
+      {{mode === 'login' ? '进入平台' : '注册并进入'}}
+    </button>
+  </view>
+</view>

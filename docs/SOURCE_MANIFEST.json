@@ -1,0 +1,500 @@
+{
+  "schemaVersion": 1,
+  "preparedOn": "2026-10-16",
+  "sourceLayout": "original component-relative paths",
+  "fileCount": 82,
+  "files": [
+    {
+      "path": "esp32_wroom32ue_water_gateway/include/pond_config.h",
+      "source": "esp32_wroom32ue_water_gateway/include/pond_config.h",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "b24bd074e4e226ec0c98fca6278461359141f5eb4339e444fc37ca13d25709f3"
+    },
+    {
+      "path": "esp32_wroom32ue_water_gateway/platformio.ini",
+      "source": "esp32_wroom32ue_water_gateway/platformio.ini",
+      "status": "byte-identical",
+      "sha256": "1b373d399d01181936ee300ccb2fa52596c8734968553188b732ad7d02a3000b"
+    },
+    {
+      "path": "esp32_wroom32ue_water_gateway/src/main.cpp",
+      "source": "esp32_wroom32ue_water_gateway/src/main.cpp",
+      "status": "byte-identical",
+      "sha256": "9c2a8dbc08f212096b70d288063cf66650224eb2573b3836e6cbf454003b205e"
+    },
+    {
+      "path": "esp32s3_environment_gateway/include/environment_config.h",
+      "source": "esp32s3_environment_gateway/include/environment_config.h",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "7257d881aa6ffeb2edb3b333b469939ba49d16bcdb430e70de645520b34b1c10"
+    },
+    {
+      "path": "esp32s3_environment_gateway/platformio.ini",
+      "source": "esp32s3_environment_gateway/platformio.ini",
+      "status": "byte-identical",
+      "sha256": "3169971bfb7ffb2c89720a3a0ec49150a76b637ac23c449ccc4d3b02f5e2f493"
+    },
+    {
+      "path": "esp32s3_environment_gateway/src/main.cpp",
+      "source": "esp32s3_environment_gateway/src/main.cpp",
+      "status": "byte-identical",
+      "sha256": "32963e26cb64afe9cb0e386dcf91b3a02d3c3cf313b0af328531192e04ecadf3"
+    },
+    {
+      "path": "esp32s3_water_gateway_pond1/include/pond_config.h",
+      "source": "esp32s3_water_gateway_pond1/include/pond_config.h",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "54589d1cf0ae809fb13359fe42028e31b0e100b518a53da917c9b2440b5354ca"
+    },
+    {
+      "path": "esp32s3_water_gateway_pond1/platformio.ini",
+      "source": "esp32s3_water_gateway_pond1/platformio.ini",
+      "status": "byte-identical",
+      "sha256": "6259290bd6742486b24736181bce9c3798db3d72dde0f0178c313d049879a03c"
+    },
+    {
+      "path": "esp32s3_water_gateway_pond1/src/main.cpp",
+      "source": "esp32s3_water_gateway_pond1/src/main.cpp",
+      "status": "byte-identical",
+      "sha256": "dbf162a3b47be13d054f60fa7aee51862ddf4f3256e14a89c11fb87f7f7ae973"
+    },
+    {
+      "path": "esp32s3_water_gateway_pond2/include/pond_config.h",
+      "source": "esp32s3_water_gateway_pond2/include/pond_config.h",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "52c0b165e565edc8b86e043be0fc8ed85757ed91af080779b88814cf7df747f0"
+    },
+    {
+      "path": "esp32s3_water_gateway_pond2/platformio.ini",
+      "source": "esp32s3_water_gateway_pond2/platformio.ini",
+      "status": "byte-identical",
+      "sha256": "0aa1b7466b4ae84656a970bca7e68372d7a28a18af03adc779e1604f523a7213"
+    },
+    {
+      "path": "esp32s3_water_gateway_pond2/src/main.cpp",
+      "source": "esp32s3_water_gateway_pond2/src/main.cpp",
+      "status": "byte-identical",
+      "sha256": "dbf162a3b47be13d054f60fa7aee51862ddf4f3256e14a89c11fb87f7f7ae973"
+    },
+    {
+      "path": "esp32s3_water_gateway_pond3/include/pond_config.h",
+      "source": "esp32s3_water_gateway_pond3/include/pond_config.h",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "5b3f248a2a814fcceee2b6e53ab38e882e34a53167ef29abce86b406f40f9b9c"
+    },
+    {
+      "path": "esp32s3_water_gateway_pond3/platformio.ini",
+      "source": "esp32s3_water_gateway_pond3/platformio.ini",
+      "status": "byte-identical",
+      "sha256": "11161e2bde58f99150a628023b88bd15750f84d17b689d9f517da24fb1849684"
+    },
+    {
+      "path": "esp32s3_water_gateway_pond3/src/main.cpp",
+      "source": "esp32s3_water_gateway_pond3/src/main.cpp",
+      "status": "byte-identical",
+      "sha256": "dbf162a3b47be13d054f60fa7aee51862ddf4f3256e14a89c11fb87f7f7ae973"
+    },
+    {
+      "path": "FishWaterSimulator/app.py",
+      "source": "FishWaterSimulator/app.py",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "653a24a01d9e69b8232f1db34563118b1c928349e069ae442c5d4775752f1a30"
+    },
+    {
+      "path": "FishWaterSimulator/requirements.txt",
+      "source": "FishWaterSimulator/requirements.txt",
+      "status": "byte-identical",
+      "sha256": "43aa4d2f5150a47eb7e5bc80ab5d29c6ad4fb4ce0053dc932bab7c13d3d6700b"
+    },
+    {
+      "path": "FishWaterSimulator/simulator_core.py",
+      "source": "FishWaterSimulator/simulator_core.py",
+      "status": "byte-identical",
+      "sha256": "49b5a60885b917b4c1554d5e580a48261e3a16cdaa911b8ab452ca2a49f09254"
+    },
+    {
+      "path": "FishWaterSimulator/static/app.js",
+      "source": "FishWaterSimulator/static/app.js",
+      "status": "byte-identical",
+      "sha256": "8a13453c73f21aede28ee80cb42ee311690a36b27fc20a285ce4e2d80b7aa166"
+    },
+    {
+      "path": "FishWaterSimulator/static/index.html",
+      "source": "FishWaterSimulator/static/index.html",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "dc1946cceffdd622e8155215b79914f9966e42537b13121007402a4594ba90ca"
+    },
+    {
+      "path": "FishWaterSimulator/static/styles.css",
+      "source": "FishWaterSimulator/static/styles.css",
+      "status": "byte-identical",
+      "sha256": "8a311c7e8dd55ee02a5fbeb7e2420927ebf3e56fc66ee9a53ce46ecc3a1de6a4"
+    },
+    {
+      "path": "FishWaterSimulator/tests/conftest.py",
+      "source": "FishWaterSimulator/tests/conftest.py",
+      "status": "byte-identical",
+      "sha256": "6b4f84d0623f63e15c18853b6e8200dc567c2b2b7987d4d4b6b12c15b4d014e4"
+    },
+    {
+      "path": "FishWaterSimulator/tests/test_app.py",
+      "source": "FishWaterSimulator/tests/test_app.py",
+      "status": "byte-identical",
+      "sha256": "976e7f6587ba4487b55d9db505e9dba7d7daa50f3e2adb8ec84be3dcd1cdabd5"
+    },
+    {
+      "path": "FishWaterSimulator/tests/test_simulator_core.py",
+      "source": "FishWaterSimulator/tests/test_simulator_core.py",
+      "status": "byte-identical",
+      "sha256": "56a111cd6f224153caa203c7893e9594397fd90933236d1cb7d298f820ebe8da"
+    },
+    {
+      "path": "new-esp32s3_actuator/platformio.ini",
+      "source": "new-esp32s3_actuator/platformio.ini",
+      "status": "byte-identical",
+      "sha256": "534cec8a491a7eebff45827b7f7998362b3cca36090994e1005166bd0f9cc639"
+    },
+    {
+      "path": "new-esp32s3_actuator/src/main.cpp",
+      "source": "new-esp32s3_actuator/src/main.cpp",
+      "status": "byte-identical",
+      "sha256": "7650e9e306c3c36973a5fb097b5450bf5db8423e2a392e4e4da9d559b8c76b51"
+    },
+    {
+      "path": "new-esp32s3_fish_counter/platformio.ini",
+      "source": "new-esp32s3_fish_counter/platformio.ini",
+      "status": "byte-identical",
+      "sha256": "5e3cef3947f268f0596c0854ae5280561fca3e2ce20a77138004f1a7c4fb3d69"
+    },
+    {
+      "path": "new-esp32s3_fish_counter/src/main.cpp",
+      "source": "new-esp32s3_fish_counter/src/main.cpp",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "7d11da1a50c81b2b21d93f6734642d631b1c17833ce4daa8b4391f2990e48b83"
+    },
+    {
+      "path": "new-esp32s3_water_gateway/platformio.ini",
+      "source": "new-esp32s3_water_gateway/platformio.ini",
+      "status": "byte-identical",
+      "sha256": "cb4526d307e5d077a4d204ec313d6a46d20e77e6fb4f23c5026a47a151ff20d1"
+    },
+    {
+      "path": "new-esp32s3_water_gateway/src/main.cpp",
+      "source": "new-esp32s3_water_gateway/src/main.cpp",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "e2aec2c71e1559fae668dbe8815b72d0686d01143ac43b8ecdb0e1b28ca30fe5"
+    },
+    {
+      "path": "raspi_water_display/app.py",
+      "source": "raspi_water_display/app.py",
+      "status": "byte-identical",
+      "sha256": "435f9a26b9c1aed7066908eb46c546a6f09ce6fd398a13bb186450d6e5df9799"
+    },
+    {
+      "path": "raspi_water_display/static/app.js",
+      "source": "raspi_water_display/static/app.js",
+      "status": "byte-identical",
+      "sha256": "a48475d5df3fb32e5fbaf3c9b1ff3fbe2ecb78b2ce24cf426e1262679fe7c407"
+    },
+    {
+      "path": "raspi_water_display/static/index.html",
+      "source": "raspi_water_display/static/index.html",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "8d4e3ef39cab946c41a7cec24c022ae78d705b1f514c63414b836a6f652a16cc"
+    },
+    {
+      "path": "raspi_water_display/static/style.css",
+      "source": "raspi_water_display/static/style.css",
+      "status": "byte-identical",
+      "sha256": "597814861e1ec999828ed98844457e4fada8d9eeaa682013ff02219f68eea4a3"
+    },
+    {
+      "path": "smpapi_voice_assistant/requirements.txt",
+      "source": "smpapi_voice_assistant/requirements.txt",
+      "status": "byte-identical",
+      "sha256": "3a2a5cb2e88bde404caa29832bd83561aa81d01a850ddd55c40e10aeaf141457"
+    },
+    {
+      "path": "smpapi_voice_assistant/smp_api.py",
+      "source": "smpapi_voice_assistant/smp_api.py",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "5fb2004f4b9cf23c7c619805d2cc61b7627972f2ebc1846438972beddb41ce35"
+    },
+    {
+      "path": "smpqt_control/test/fishpond_bg_v1.png",
+      "source": "smpqt_control/test/fishpond_bg_v1.png",
+      "status": "byte-identical",
+      "sha256": "9bca9ca6b1d2ce061c2a85b0eccd47d5a7abeaf12dfc8e7e25a1153d8fff8a94"
+    },
+    {
+      "path": "smpqt_control/test/fishpond_login_bg_v1.png",
+      "source": "smpqt_control/test/fishpond_login_bg_v1.png",
+      "status": "byte-identical",
+      "sha256": "1f19755e928e2df6d9b68a83842403c2a161ea1c4cef9aeb669a829bcfb61653"
+    },
+    {
+      "path": "smpqt_control/test/main.cpp",
+      "source": "smpqt_control/test/main.cpp",
+      "status": "byte-identical",
+      "sha256": "dda889f5e791328e0ac22792447097e6b199f565fe3a4bdcb183246708045d08"
+    },
+    {
+      "path": "smpqt_control/test/res.qrc",
+      "source": "smpqt_control/test/res.qrc",
+      "status": "byte-identical",
+      "sha256": "f205574c880efcc3125432671966fb2203a88a5245ed6ff008349a578e0875f6"
+    },
+    {
+      "path": "smpqt_control/test/test.pro",
+      "source": "smpqt_control/test/test.pro",
+      "status": "byte-identical",
+      "sha256": "13a96b58d5b0c1c09e6d1b016e50267161cf1b0528d6b434ba9f45db344d3b0a"
+    },
+    {
+      "path": "smpqt_control/test/widget.cpp",
+      "source": "smpqt_control/test/widget.cpp",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "2339c731cf87a40a1ef644933bf3b811171059db0ae01a1566c242247a4052e1"
+    },
+    {
+      "path": "smpqt_control/test/widget.h",
+      "source": "smpqt_control/test/widget.h",
+      "status": "byte-identical",
+      "sha256": "0fc062053a9e012981b932ac476235070dfba731dbda389009b4adfce12b2f12"
+    },
+    {
+      "path": "smpqt_control/test/widget.ui",
+      "source": "smpqt_control/test/widget.ui",
+      "status": "byte-identical",
+      "sha256": "3ded64e554b975b310f2e425a3b5ea6f677e218055f5de0b9a474ada56d1f6c6"
+    },
+    {
+      "path": "tests/test_gateway_chip_temperature.py",
+      "source": "tests/test_gateway_chip_temperature.py",
+      "status": "byte-identical",
+      "sha256": "32e1a4d8b51b3d46eb707209c1ccaaa494753960c6f581fa7fdbd2ee20723c86"
+    },
+    {
+      "path": "tests/test_gateway_control_topics.py",
+      "source": "tests/test_gateway_control_topics.py",
+      "status": "byte-identical",
+      "sha256": "1d2249dbe5ed4fb90822a4de311e00424864c220815c824ab1b0aed5677e781e"
+    },
+    {
+      "path": "tests/test_gateway_publish_interval.py",
+      "source": "tests/test_gateway_publish_interval.py",
+      "status": "byte-identical",
+      "sha256": "a6b32425892230a9951c3beba1701c1d7e4a24b6acdc51718fd7d36eca90962d"
+    },
+    {
+      "path": "tests/test_gateway_sensor_timing.py",
+      "source": "tests/test_gateway_sensor_timing.py",
+      "status": "byte-identical",
+      "sha256": "d6ee6b43dbd381f4a16f14291a6aca1d4f47e1cd90003cf97f8c4bbf2b8f37f4"
+    },
+    {
+      "path": "tests/test_gateway_wifi_config.py",
+      "source": "tests/test_gateway_wifi_config.py",
+      "status": "byte-identical",
+      "sha256": "b5f1d791a5d78418291e48091a29b9f2a18d020a850a86650f29577e3e271838"
+    },
+    {
+      "path": "tests/test_wroom32ue_gateway.py",
+      "source": "tests/test_wroom32ue_gateway.py",
+      "status": "byte-identical",
+      "sha256": "d79baa22cf8cc5543f6bbbc92a50edb0b7170703774c0e6b45f1b21ad75b9fba"
+    },
+    {
+      "path": "web_dashboard/dashboard.html",
+      "source": "web_dashboard/dashboard.html",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "5c721b456a9b921ea0a2e44a8f0c9c34e5e560c32d7174a4004f9255882a47cb"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/app.js",
+      "source": "wx_mini_program/miniprogram/app.js",
+      "status": "byte-identical",
+      "sha256": "22e6b15471a2f2f7252bf3c2b43ad588a656ae9d69fdb3ec5a9b37fe702a8488"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/app.json",
+      "source": "wx_mini_program/miniprogram/app.json",
+      "status": "byte-identical",
+      "sha256": "c34cc343b72ead735df0fdc524c9640979cfd43fbd76c33fe295c996aa55844b"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/app.wxss",
+      "source": "wx_mini_program/miniprogram/app.wxss",
+      "status": "byte-identical",
+      "sha256": "60e323524dec76e88b284ea048feffa7d1adc15b276b8fe5cefeefe06453d90b"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/auth/index.js",
+      "source": "wx_mini_program/miniprogram/pages/auth/index.js",
+      "status": "byte-identical",
+      "sha256": "89bf22e8b20e546cb5d0760e7ba436acd3dd1341875068252d443ba0bb82cb88"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/auth/index.json",
+      "source": "wx_mini_program/miniprogram/pages/auth/index.json",
+      "status": "byte-identical",
+      "sha256": "69cf61be268a97eda90c5df0cd1b5f0105551c11d36827eba8316fdf08fd7cf8"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/auth/index.wxml",
+      "source": "wx_mini_program/miniprogram/pages/auth/index.wxml",
+      "status": "byte-identical",
+      "sha256": "9369f958fc2b27e6561f1baf6e9d9e52f0d33d4d242b5ad1044163c1ce518a24"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/auth/index.wxss",
+      "source": "wx_mini_program/miniprogram/pages/auth/index.wxss",
+      "status": "byte-identical",
+      "sha256": "a13e116e9fe2641248a63e8f8af9bca019a97043fbdcda95ea7421c6cba953ea"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/camera/index.js",
+      "source": "wx_mini_program/miniprogram/pages/camera/index.js",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "4a878d5f01e408c602d0f06e5b57beb3cb8f36f1f7f61e90a6add7a089c08903"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/camera/index.json",
+      "source": "wx_mini_program/miniprogram/pages/camera/index.json",
+      "status": "byte-identical",
+      "sha256": "8de3fc444bd77f1316093467a1ab6323287215f76cea37a203b48510ffcbda5d"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/camera/index.wxml",
+      "source": "wx_mini_program/miniprogram/pages/camera/index.wxml",
+      "status": "byte-identical",
+      "sha256": "d11e78578f073d1b4b59b30c156a85a6df2e93d47c8adae9fd8ab4a3e2c8c711"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/camera/index.wxss",
+      "source": "wx_mini_program/miniprogram/pages/camera/index.wxss",
+      "status": "byte-identical",
+      "sha256": "bc26f324788a42710d8624d83d0819ab97a6529a4ff9065a5c4efbe061c2393b"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/camera-view/index.js",
+      "source": "wx_mini_program/miniprogram/pages/camera-view/index.js",
+      "status": "byte-identical",
+      "sha256": "84257f07bbd8772b275d6110a9bbb40a40dc6e29c1b8efeb9fa08e41b8c9b90d"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/camera-view/index.json",
+      "source": "wx_mini_program/miniprogram/pages/camera-view/index.json",
+      "status": "byte-identical",
+      "sha256": "1b4f05ca14030f60836c0b35188035e5d5b9108ac2fb33f1714130a4d0299a7f"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/camera-view/index.wxml",
+      "source": "wx_mini_program/miniprogram/pages/camera-view/index.wxml",
+      "status": "byte-identical",
+      "sha256": "7153e81ddd2c172362ccb3ed39043cbfd1564add7d6f371c788af38e6aaf1260"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/camera-view/index.wxss",
+      "source": "wx_mini_program/miniprogram/pages/camera-view/index.wxss",
+      "status": "byte-identical",
+      "sha256": "33d5fc523f6e3a3448b44c4c0a3b892d7f1c48baf5520914fafa6ac6df5e180e"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/index/index.js",
+      "source": "wx_mini_program/miniprogram/pages/index/index.js",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "9b6dee5a3bc3c3d3b986d6835c58aacf07941b0e7f215d113743aea672ecfe59"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/index/index.json",
+      "source": "wx_mini_program/miniprogram/pages/index/index.json",
+      "status": "byte-identical",
+      "sha256": "b65e16454f002063581c833be4852f5903e732266c008958a0203f83e12debd3"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/index/index.wxml",
+      "source": "wx_mini_program/miniprogram/pages/index/index.wxml",
+      "status": "byte-identical",
+      "sha256": "3ef046e0306c59184a4067d487f29d0077e49ec60b43a31cbdaad8373aec175b"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/index/index.wxss",
+      "source": "wx_mini_program/miniprogram/pages/index/index.wxss",
+      "status": "byte-identical",
+      "sha256": "ae6321206c7ca9b3c5d4c7bd5bba7bb513a4c7c64528710b927b93cd8cd7904a"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/manual/index.js",
+      "source": "wx_mini_program/miniprogram/pages/manual/index.js",
+      "status": "byte-identical",
+      "sha256": "38b269f4c4f84dba043b104290ea12d3831fde52dab38e24fc8830ccd3500758"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/manual/index.json",
+      "source": "wx_mini_program/miniprogram/pages/manual/index.json",
+      "status": "byte-identical",
+      "sha256": "022c84e70cd109f8c1fc9276cd03143cde3b567dac49df800a8f180bb35876e6"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/manual/index.wxml",
+      "source": "wx_mini_program/miniprogram/pages/manual/index.wxml",
+      "status": "byte-identical",
+      "sha256": "2a2545bf4bd30c4ff53dd8d6dd88abde754efcd9acf78274182400a4ab1e6567"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/manual/index.wxss",
+      "source": "wx_mini_program/miniprogram/pages/manual/index.wxss",
+      "status": "byte-identical",
+      "sha256": "97a0e5a06f6721560bf6ecf7cda9c7976c0c2173bf4f4d719746ecba17ec155b"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/report/index.js",
+      "source": "wx_mini_program/miniprogram/pages/report/index.js",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "7896e12a45bdc3b968a98c00ceb0673273a9bc7caea9db77fa61541abdea41c7"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/report/index.json",
+      "source": "wx_mini_program/miniprogram/pages/report/index.json",
+      "status": "byte-identical",
+      "sha256": "db34ef40fe085a73a63eabd2850356c532ec28b5cf7c22cd84b8ca3c8b4dfe19"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/report/index.wxml",
+      "source": "wx_mini_program/miniprogram/pages/report/index.wxml",
+      "status": "byte-identical",
+      "sha256": "160bf22bd700984eb1939a433deb58e02fbcbf8be86d26157742aa072fa1886e"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/pages/report/index.wxss",
+      "source": "wx_mini_program/miniprogram/pages/report/index.wxss",
+      "status": "byte-identical",
+      "sha256": "1b0791ed2922a6c9d5e734c8b6beb0992aa3742dca4c8c83b3b91c00f0078e51"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/sitemap.json",
+      "source": "wx_mini_program/miniprogram/sitemap.json",
+      "status": "byte-identical",
+      "sha256": "9b6f9ce8a1cd47042022491f1a8cd55862a73466f3615a52014b4d350859fbd1"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/utils/auth.js",
+      "source": "wx_mini_program/miniprogram/utils/auth.js",
+      "status": "byte-identical",
+      "sha256": "a528897f765b28803317d8f931c40e219864ae95ed7f0d87ecac12da60b4dfc1"
+    },
+    {
+      "path": "wx_mini_program/miniprogram/utils/water-quality.js",
+      "source": "wx_mini_program/miniprogram/utils/water-quality.js",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "8867ccc2d00c4ffaf5ffa15109651a206e8878a3a265b0ebca803ef5810d6a92"
+    },
+    {
+      "path": "x86api_text_ai/after_api.py",
+      "source": "x86api_text_ai/after_api.py",
+      "status": "public-configuration-and-copy-edits",
+      "sha256": "b4e57590c6907bd70884118a95e659e793784482792fdd848242a7bd33711473"
+    }
+  ]
+}

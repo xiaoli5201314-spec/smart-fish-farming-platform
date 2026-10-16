@@ -1,0 +1,57 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+**/*api_key*.txt
+**/*credentials*
+**/*secrets*
+FishWaterSimulator/simulator_config.json
+raspi_water_display/config.json
+wx_mini_program/project.config.json
+wx_mini_program/project.private.config.json
+**/local_config.h
+
+# Python / Node / firmware / Qt output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+.pio/
+build/
+build-*/
+dist/
+release/
+debug/
+*.pro.user*
+Makefile*
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+
+# Runtime records and models
+*.log
+*.db
+*.sqlite*
+*.csv
+*.wav
+*.mp3
+models/
+data/
+logs/
+recordings/
+waterTrendHistory*
+
+# Archives, documents, engine assets, and local checks
+*.zip
+*.rar
+*.7z
+*.pdf
+*.docx
+*.pptx
+*.uasset
+*.umap
+.verification/
+.DS_Store
+Thumbs.db

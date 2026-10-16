@@ -1,0 +1,2707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>种鱼数智管理平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Microsoft YaHei', sans-serif;
+            background: #020617;
+            min-height: 100vh;
+            color: #f8fafc;
+            overflow: hidden;
+        }
+
+        /* 视频背景 */
+        .video-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            background: #020617;
+        }
+
+        /* 顶部导航 */
+        .top-bar {
+            position: relative;
+            z-index: 10;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .brand-text h1 {
+            font-size: 18px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #f8fafc, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-text span {
+            font-size: 11px;
+            color: #94a3b8;
+            letter-spacing: 1px;
+        }
+
+        /* 导航标签 */
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-tab {
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tab:hover {
+            color: #f8fafc;
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        /* 状态栏 */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-pulse.green {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+            animation: statusGlow 2s ease-in-out infinite;
+        }
+
+        .status-pulse.red {
+            background: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+        }
+
+        @keyframes statusGlow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .time-box {
+            font-size: 20px;
+            font-weight: 600;
+            color: #6366f1;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        .settings-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .settings-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: #6366f1;
+        }
+
+        /* 主内容 */
+        .main-content {
+            position: relative;
+            z-index: 5;
+            height: calc(100vh - 70px);
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 300px 1fr 380px;
+            gap: 24px;
+        }
+
+        /* 卡片 */
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 14px;
+            font-weight: 600;
+            color: #a5b4fc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header i {
+            color: #6366f1;
+        }
+
+        /* 指标卡片 */
+        .metric-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: #6366f1;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+        }
+
+        .metric-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .metric-name {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .metric-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f8fafc;
+            font-family: 'Courier New', monospace;
+        }
+
+        .metric-unit {
+            font-size: 12px;
+            color: #64748b;
+            margin-left: 4px;
+        }
+
+        .metric-gauge {
+            height: 50px;
+            margin-top: 8px;
+        }
+
+        /* 进度条 */
+        .progress-section {
+            padding: 16px 20px;
+        }
+
+        .progress-item {
+            margin-bottom: 14px;
+        }
+
+        .progress-head {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .progress-name {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .progress-val {
+            font-size: 12px;
+            color: #a5b4fc;
+            font-family: monospace;
+        }
+
+        .progress-track {
+            height: 8px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 30px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5));
+        }
+
+        /* 中间主区域 */
+        .center-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 主圆环 */
+        .ring-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .main-ring {
+            width: 320px;
+            height: 320px;
+            position: relative;
+        }
+
+        .ring-chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ring-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .ring-score {
+            font-size: 56px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ring-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* 小圆环组 */
+        .mini-rings {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            padding: 20px;
+        }
+
+        .mini-ring {
+            text-align: center;
+        }
+
+        .mini-ring-chart {
+            width: 90px;
+            height: 90px;
+        }
+
+        .mini-ring-label {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        .mini-ring-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f8fafc;
+            margin-top: 4px;
+        }
+
+        /* 统计数字 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 16px 20px;
+        }
+
+        .stat-item {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 24px;
+            font-weight: 700;
+            color: #a5b4fc;
+            font-family: 'Courier New', monospace;
+        }
+
+        .stat-text {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* AI对话 */
+        .ai-section {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .chat-msg.ai {
+            align-self: flex-start;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-msg.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-msg.loading {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px dashed rgba(99, 102, 241, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #94a3b8;
+        }
+
+        .chat-input-area {
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 24px;
+            color: #f8fafc;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .chat-input::placeholder {
+            color: #64748b;
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .chat-clear-btn {
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(99, 102, 241, 0.24);
+            background: rgba(99, 102, 241, 0.08);
+            color: #a5b4fc;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.25s;
+        }
+
+        .chat-clear-btn:hover {
+            color: #f8fafc;
+            border-color: rgba(99, 102, 241, 0.42);
+            background: rgba(99, 102, 241, 0.18);
+            box-shadow: 0 0 18px rgba(99, 102, 241, 0.22);
+        }
+
+        /* 视频监控 */
+        .video-area {
+            display: none;
+        }
+
+        .video-container {
+            flex: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .video-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .video-btns {
+            display: flex;
+            gap: 12px;
+            padding: 16px 0;
+        }
+
+        .video-btn {
+            padding: 10px 20px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 10px;
+            color: #a5b4fc;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .video-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .info-list {
+            padding: 16px 0;
+        }
+
+        .info-item {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.12);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #f8fafc;
+            margin-top: 4px;
+        }
+
+        /* 弹窗 */
+        .modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-bg.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 440px;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #a5b4fc;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .modal-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 10px;
+            color: #f8fafc;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #6366f1;
+        }
+
+        .test-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .test-btn {
+            padding: 6px 14px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 6px;
+            color: #a5b4fc;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .test-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .test-result {
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        .test-result.ok {
+            color: #10b981;
+        }
+
+        .test-result.fail {
+            color: #f87171;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.3s;
+        }
+
+        .save-btn:hover {
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #6366f1;
+            border-radius: 2px;
+        }
+
+        /* 大数据动态可视化增强 */
+        :root {
+            --cyan: #00f5ff;
+            --blue: #2f7bff;
+            --violet: #8b5cf6;
+            --green: #19ffb0;
+            --amber: #ffd166;
+            --panel: rgba(5, 18, 36, 0.76);
+            --panel-border: rgba(0, 245, 255, 0.24);
+            --panel-glow: rgba(0, 245, 255, 0.18);
+        }
+
+        body {
+            background: transparent;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background-image: radial-gradient(rgba(0, 245, 255, 0.055) 1px, transparent 1px);
+            background-size: 16px 16px;
+            opacity: 0.55;
+            mix-blend-mode: screen;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 50% 18%, rgba(0, 245, 255, 0.08), transparent 30%),
+                linear-gradient(180deg, rgba(0, 8, 22, 0.28), rgba(0, 8, 22, 0.08) 42%, rgba(0, 8, 22, 0.30));
+        }
+
+        @keyframes rotateHalo {
+            from { rotate: 0deg; }
+            to { rotate: 360deg; }
+        }
+
+        .top-bar {
+            height: 76px;
+            background:
+                linear-gradient(180deg, rgba(0, 245, 255, 0.13), rgba(0, 245, 255, 0.02)),
+                rgba(3, 10, 25, 0.78);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.28);
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.34), 0 0 36px rgba(0, 245, 255, 0.08);
+        }
+
+        .brand-icon {
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            color: #00111f;
+            box-shadow: 0 0 26px rgba(0, 245, 255, 0.55), inset 0 0 18px rgba(255, 255, 255, 0.35);
+            animation: iconBreath 2.8s ease-in-out infinite;
+        }
+
+        @keyframes iconBreath {
+            0%, 100% { transform: scale(1); filter: saturate(1); }
+            50% { transform: scale(1.06); filter: saturate(1.5); }
+        }
+
+        .brand-text h1 {
+            font-size: 21px;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #ffffff, var(--cyan), #b7f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 26px rgba(0, 245, 255, 0.26);
+        }
+
+        .brand-text span {
+            color: rgba(183, 248, 255, 0.72);
+            letter-spacing: 3px;
+        }
+
+        .nav-tabs {
+            background: rgba(2, 13, 30, 0.74);
+            border: 1px solid rgba(0, 245, 255, 0.24);
+            box-shadow: inset 0 0 22px rgba(0, 245, 255, 0.06);
+        }
+
+        .nav-tab {
+            color: rgba(183, 248, 255, 0.68);
+        }
+
+        .nav-tab:hover {
+            background: rgba(0, 245, 255, 0.12);
+            color: #eaffff;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            color: #00111f;
+            box-shadow: 0 0 24px rgba(0, 245, 255, 0.44);
+        }
+
+        .status-item {
+            color: rgba(217, 250, 255, 0.75);
+        }
+
+        .status-pulse.green {
+            background: var(--green);
+            box-shadow: 0 0 12px var(--green), 0 0 28px rgba(25, 255, 176, 0.46);
+        }
+
+        .status-pulse.red {
+            background: #ff4d6d;
+            box-shadow: 0 0 12px #ff4d6d, 0 0 28px rgba(255, 77, 109, 0.42);
+        }
+
+        .time-box {
+            color: var(--cyan);
+            text-shadow: 0 0 18px rgba(0, 245, 255, 0.55);
+        }
+
+        .settings-btn {
+            background: rgba(0, 245, 255, 0.08);
+            border-color: rgba(0, 245, 255, 0.28);
+            color: var(--cyan);
+        }
+
+        .settings-btn:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 24px rgba(0, 245, 255, 0.32);
+        }
+
+        .main-content {
+            height: calc(100vh - 76px);
+            padding: 18px 22px 22px;
+            gap: 18px;
+        }
+
+        .card {
+            position: relative;
+            background:
+                linear-gradient(180deg, rgba(0, 245, 255, 0.05), transparent 36%),
+                var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            box-shadow:
+                0 20px 80px rgba(0, 0, 0, 0.30),
+                inset 0 0 32px rgba(0, 245, 255, 0.045),
+                0 0 34px rgba(0, 245, 255, 0.08);
+        }
+
+        .card::before,
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .card::before {
+            background:
+                linear-gradient(var(--cyan), var(--cyan)) left top / 34px 1px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) left top / 1px 34px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) right top / 34px 1px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) right top / 1px 34px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) left bottom / 34px 1px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) left bottom / 1px 34px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) right bottom / 34px 1px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) right bottom / 1px 34px no-repeat;
+            opacity: 0.62;
+        }
+
+        .card::after {
+            background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.055) 42%, transparent 58%);
+            transform: translateX(-120%);
+            animation: panelSweep 9s linear infinite;
+        }
+
+        @keyframes panelSweep {
+            0%, 52% { transform: translateX(-120%); }
+            78%, 100% { transform: translateX(120%); }
+        }
+
+        .card:hover {
+            border-color: rgba(0, 245, 255, 0.48);
+            box-shadow:
+                0 20px 90px rgba(0, 0, 0, 0.36),
+                inset 0 0 44px rgba(0, 245, 255, 0.08),
+                0 0 44px rgba(0, 245, 255, 0.18);
+        }
+
+        .card-header {
+            min-height: 52px;
+            padding: 15px 20px;
+            color: #dffcff;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(0, 245, 255, 0.16);
+            background: linear-gradient(90deg, rgba(0, 245, 255, 0.14), transparent 72%);
+        }
+
+        .card-header i {
+            color: var(--cyan);
+            text-shadow: 0 0 16px rgba(0, 245, 255, 0.6);
+        }
+
+        .metric-card,
+        .stat-item,
+        .info-item {
+            background:
+                linear-gradient(135deg, rgba(0, 245, 255, 0.12), rgba(47, 123, 255, 0.05)),
+                rgba(2, 13, 30, 0.58);
+            border-color: rgba(0, 245, 255, 0.22);
+            border-radius: 12px;
+        }
+
+        .metric-card {
+            margin: 9px 10px;
+            padding: 14px 15px;
+            box-shadow: inset 0 0 26px rgba(0, 245, 255, 0.04);
+        }
+
+        .metric-card:hover {
+            border-color: rgba(0, 245, 255, 0.54);
+            box-shadow: 0 0 28px rgba(0, 245, 255, 0.16), inset 0 0 30px rgba(0, 245, 255, 0.07);
+        }
+
+        .metric-name,
+        .progress-name,
+        .mini-ring-label,
+        .stat-text,
+        .info-label {
+            color: rgba(183, 248, 255, 0.66);
+        }
+
+        .metric-icon {
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            color: #00111f;
+            box-shadow: 0 0 18px rgba(0, 245, 255, 0.42);
+        }
+
+        .metric-value,
+        .mini-ring-value,
+        .info-value {
+            color: #ffffff;
+            text-shadow: 0 0 16px rgba(0, 245, 255, 0.22);
+        }
+
+        .metric-unit {
+            color: rgba(183, 248, 255, 0.58);
+        }
+
+        .progress-track {
+            height: 10px;
+            background: rgba(0, 245, 255, 0.08);
+            border: 1px solid rgba(0, 245, 255, 0.12);
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--green), var(--cyan), var(--blue));
+            box-shadow: 0 0 18px rgba(0, 245, 255, 0.38);
+        }
+
+        .ring-section::before {
+            content: '';
+            position: absolute;
+            width: 430px;
+            height: 430px;
+            border-radius: 50%;
+            background:
+                repeating-conic-gradient(from 0deg, rgba(0, 245, 255, 0.18) 0deg 2deg, transparent 2deg 9deg),
+                radial-gradient(circle, transparent 58%, rgba(0, 245, 255, 0.08) 59%, transparent 62%);
+            filter: drop-shadow(0 0 24px rgba(0, 245, 255, 0.16));
+            animation: rotateHalo 26s linear infinite;
+        }
+
+        .main-ring {
+            z-index: 1;
+        }
+
+        .ring-score {
+            background: linear-gradient(135deg, #ffffff, var(--cyan), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 34px rgba(0, 245, 255, 0.38);
+        }
+
+        .ring-label {
+            color: rgba(217, 250, 255, 0.74);
+            letter-spacing: 3px;
+        }
+
+        .stat-num {
+            color: var(--cyan);
+            text-shadow: 0 0 18px rgba(0, 245, 255, 0.5);
+        }
+
+        .chat-msg.ai {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.11), rgba(47, 123, 255, 0.08));
+            border-color: rgba(0, 245, 255, 0.24);
+        }
+
+        .chat-msg.user,
+        .send-btn,
+        .save-btn {
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            color: #00111f;
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.24);
+        }
+
+        .chat-input,
+        .form-input {
+            background: rgba(1, 10, 24, 0.74);
+            border-color: rgba(0, 245, 255, 0.22);
+        }
+
+        .chat-input:focus,
+        .form-input:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 22px rgba(0, 245, 255, 0.22);
+        }
+
+        .video-container {
+            border-color: rgba(0, 245, 255, 0.22);
+            box-shadow: inset 0 0 42px rgba(0, 245, 255, 0.08);
+        }
+
+        .video-btn,
+        .test-btn {
+            background: rgba(0, 245, 255, 0.08);
+            border-color: rgba(0, 245, 255, 0.24);
+            color: var(--cyan);
+        }
+
+        .video-btn:hover,
+        .test-btn:hover {
+            background: rgba(0, 245, 255, 0.16);
+        }
+
+        .modal-box {
+            background: rgba(3, 12, 28, 0.96);
+            border-color: rgba(0, 245, 255, 0.34);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 50px rgba(0, 245, 255, 0.18);
+        }
+
+        .modal-title {
+            color: var(--cyan);
+        }
+
+        /* 视频优先：提高界面透明度，让背景视频尽量清楚 */
+        :root {
+            --panel: rgba(5, 18, 36, 0.18);
+            --panel-border: rgba(0, 245, 255, 0.15);
+            --panel-glow: rgba(0, 245, 255, 0.06);
+        }
+
+        .top-bar {
+            background:
+                linear-gradient(180deg, rgba(0, 245, 255, 0.05), rgba(0, 245, 255, 0.01)),
+                rgba(3, 10, 25, 0.34);
+            backdrop-filter: none;
+            border-bottom-color: rgba(0, 245, 255, 0.24);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+        }
+
+        .nav-tabs {
+            background: rgba(2, 13, 30, 0.24);
+            box-shadow: inset 0 0 14px rgba(0, 245, 255, 0.035);
+        }
+
+        .card {
+            background:
+                linear-gradient(180deg, rgba(0, 245, 255, 0.035), transparent 34%),
+                rgba(5, 18, 36, 0.28);
+            backdrop-filter: none;
+            border-color: rgba(0, 245, 255, 0.28);
+            box-shadow:
+                0 14px 42px rgba(0, 0, 0, 0.24),
+                inset 0 0 24px rgba(0, 245, 255, 0.045),
+                0 0 20px rgba(0, 245, 255, 0.08);
+        }
+
+        .card::before {
+            background:
+                linear-gradient(var(--cyan), var(--cyan)) left top / 18px 2px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) left top / 2px 18px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) right top / 18px 2px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) right top / 2px 18px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) left bottom / 18px 2px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) left bottom / 2px 18px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) right bottom / 18px 2px no-repeat,
+                linear-gradient(var(--cyan), var(--cyan)) right bottom / 2px 18px no-repeat;
+            opacity: 0.62;
+        }
+
+        .card::after {
+            opacity: 0.12;
+        }
+
+        .card-header {
+            color: #f3ffff;
+            background: linear-gradient(90deg, rgba(0, 245, 255, 0.09), transparent 72%);
+            border-bottom-color: rgba(0, 245, 255, 0.16);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85), 0 0 14px rgba(0, 245, 255, 0.28);
+        }
+
+        .metric-card,
+        .stat-item,
+        .info-item {
+            background:
+                linear-gradient(135deg, rgba(0, 245, 255, 0.06), rgba(47, 123, 255, 0.025)),
+                rgba(2, 13, 30, 0.24);
+            border-color: rgba(0, 245, 255, 0.20);
+            box-shadow: inset 0 0 16px rgba(0, 245, 255, 0.025), 0 10px 24px rgba(0, 0, 0, 0.14);
+        }
+
+        .chat-msg.ai {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.08), rgba(47, 123, 255, 0.035));
+            border-color: rgba(0, 245, 255, 0.20);
+        }
+
+        .chat-clear-btn {
+            background: rgba(0, 245, 255, 0.08);
+            border-color: rgba(0, 245, 255, 0.24);
+            color: var(--cyan);
+        }
+
+        .chat-clear-btn:hover {
+            border-color: rgba(0, 245, 255, 0.46);
+            background: rgba(0, 245, 255, 0.16);
+            box-shadow: 0 0 18px rgba(0, 245, 255, 0.26);
+        }
+
+        .chat-input-area {
+            background: rgba(1, 10, 24, 0.20);
+            border-top-color: rgba(0, 245, 255, 0.14);
+        }
+
+        .chat-input,
+        .form-input {
+            background: rgba(1, 10, 24, 0.30);
+        }
+
+        .video-container {
+            background: rgba(0, 0, 0, 0.08);
+            box-shadow: inset 0 0 18px rgba(0, 245, 255, 0.025);
+        }
+
+        .progress-track {
+            height: 12px;
+            padding: 1px;
+            background: rgba(0, 245, 255, 0.045);
+            border: 1px solid rgba(0, 245, 255, 0.18);
+            border-radius: 3px;
+            box-shadow: inset 0 0 12px rgba(0, 245, 255, 0.08);
+        }
+
+        .progress-fill {
+            border-radius: 2px;
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.32) 0,
+                    rgba(255, 255, 255, 0.32) 1px,
+                    transparent 1px,
+                    transparent 8px
+                ),
+                linear-gradient(90deg, var(--green), var(--cyan), var(--blue));
+            box-shadow: 0 0 16px rgba(0, 245, 255, 0.48);
+        }
+
+        .progress-fill::after {
+            display: none;
+        }
+
+        .brand-text h1,
+        .brand-text span,
+        .nav-tab,
+        .status-item,
+        .metric-name,
+        .progress-name,
+        .mini-ring-label,
+        .stat-text,
+        .info-label,
+        .metric-unit,
+        .ring-label,
+        .chat-msg,
+        .form-label,
+        .test-result {
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.86), 0 0 12px rgba(0, 245, 255, 0.18);
+        }
+
+        .metric-name,
+        .progress-name,
+        .mini-ring-label,
+        .stat-text,
+        .info-label,
+        .metric-unit {
+            color: rgba(222, 252, 255, 0.88);
+            font-weight: 700;
+        }
+
+        .metric-value,
+        .ring-score,
+        .mini-ring-value,
+        .stat-num,
+        .info-value,
+        .progress-val,
+        .time-box {
+            color: #ffffff;
+            text-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.92),
+                0 0 20px rgba(0, 245, 255, 0.42),
+                0 0 36px rgba(25, 255, 176, 0.14);
+        }
+
+        .ring-score {
+            filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.85));
+        }
+
+        .card-header span[style],
+        .chat-msg i[style],
+        .info-value[style] {
+            color: #dffcff !important;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.86), 0 0 14px rgba(0, 245, 255, 0.26);
+        }
+
+        .analysis-content {
+            grid-template-columns: 1.35fr 0.9fr;
+            grid-template-rows: auto 1fr;
+        }
+
+        .analysis-overview {
+            grid-column: 1 / -1;
+        }
+
+        .analysis-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            padding: 16px;
+        }
+
+        .analysis-tile {
+            min-height: 94px;
+            padding: 16px;
+            border-radius: 12px;
+            background:
+                linear-gradient(135deg, rgba(0, 245, 255, 0.08), rgba(47, 123, 255, 0.03)),
+                rgba(2, 13, 30, 0.24);
+            border: 1px solid rgba(0, 245, 255, 0.20);
+            box-shadow: inset 0 0 16px rgba(0, 245, 255, 0.025), 0 10px 24px rgba(0, 0, 0, 0.14);
+        }
+
+        .analysis-label {
+            font-size: 12px;
+            color: rgba(222, 252, 255, 0.78);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.86), 0 0 12px rgba(0, 245, 255, 0.18);
+        }
+
+        .analysis-value {
+            margin-top: 10px;
+            font-size: 30px;
+            line-height: 1;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.92),
+                0 0 20px rgba(0, 245, 255, 0.42),
+                0 0 36px rgba(25, 255, 176, 0.14);
+        }
+
+        .analysis-desc {
+            margin-top: 8px;
+            font-size: 12px;
+            color: rgba(183, 248, 255, 0.66);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.86);
+        }
+
+        .analysis-chart-card,
+        .analysis-side-card {
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .analysis-chart {
+            flex: 1;
+            min-height: 360px;
+            padding: 10px 14px 14px;
+        }
+
+        .analysis-side-stack {
+            min-height: 0;
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .risk-chart {
+            min-height: 220px;
+        }
+
+        .insight-panel {
+            padding: 16px;
+        }
+
+        .insight-title {
+            font-size: 13px;
+            color: rgba(222, 252, 255, 0.78);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .insight-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #f3ffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.86), 0 0 12px rgba(0, 245, 255, 0.18);
+        }
+
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 0 16px 16px;
+            overflow: hidden;
+        }
+
+        .event-item {
+            display: grid;
+            grid-template-columns: 9px 1fr;
+            gap: 12px;
+            align-items: start;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(2, 13, 30, 0.24);
+            border: 1px solid rgba(0, 245, 255, 0.16);
+        }
+
+        .event-dot {
+            width: 9px;
+            height: 9px;
+            margin-top: 6px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 12px var(--cyan);
+        }
+
+        .event-dot.warn {
+            background: #ff4d6d;
+            box-shadow: 0 0 12px #ff4d6d;
+        }
+
+        .event-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.86);
+        }
+
+        .event-desc {
+            margin-top: 4px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: rgba(183, 248, 255, 0.70);
+        }
+
+        /* 页面切换动效 */
+        .nav-tabs {
+            position: relative;
+            isolation: isolate;
+        }
+
+        .nav-indicator {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 0;
+            width: calc((100% - 8px) / 3);
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            box-shadow: 0 0 24px rgba(0, 245, 255, 0.44);
+            transform: translateX(4px);
+            transition: transform 0.36s cubic-bezier(0.2, 0.9, 0.22, 1), width 0.36s cubic-bezier(0.2, 0.9, 0.22, 1);
+            z-index: 0;
+        }
+
+        .nav-tab {
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-tab.active {
+            background: transparent;
+            color: #00111f;
+            box-shadow: none;
+        }
+
+        .main-content {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+            transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.2, 0.9, 0.22, 1), filter 0.32s ease;
+        }
+
+        .main-content.hidden {
+            display: none !important;
+        }
+
+        .main-content.view-enter {
+            opacity: 0;
+            transform: translateY(18px) scale(0.985);
+            filter: blur(4px);
+            pointer-events: none;
+        }
+
+        .main-content.view-leave {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.992);
+            filter: blur(4px);
+            pointer-events: none;
+        }
+
+        @keyframes revealItem {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.985);
+                filter: blur(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes videoOpen {
+            from {
+                opacity: 0.36;
+                transform: scaleX(0.965) scaleY(0.92);
+                filter: saturate(0.65) blur(5px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+                filter: saturate(1) blur(0);
+            }
+        }
+
+        .reveal-item {
+            transform-origin: center;
+            will-change: opacity, transform, filter;
+        }
+
+        .main-content.view-intro .reveal-item {
+            animation: revealItem 0.54s cubic-bezier(0.2, 0.9, 0.22, 1) both;
+            animation-delay: var(--reveal-delay, 0ms);
+        }
+
+        .main-content.view-intro .video-container {
+            animation: videoOpen 0.62s cubic-bezier(0.2, 0.9, 0.22, 1) both;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nav-indicator,
+            .main-content {
+                transition: none;
+            }
+
+            .main-content.view-intro .reveal-item,
+            .main-content.view-intro .video-container {
+                animation: none;
+            }
+        }
+
+        @media (max-width: 1180px) {
+            body { overflow: auto; }
+            .top-bar { height: auto; min-height: 76px; flex-wrap: wrap; gap: 14px; padding: 16px 20px; }
+            .main-content,
+            .analysis-content { height: auto; grid-template-columns: 1fr; }
+            .analysis-overview { grid-column: auto; }
+            .analysis-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .analysis-side-stack { grid-template-rows: auto; }
+            .status-bar { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 视频背景 -->
+    <video class="video-bg" autoplay muted loop playsinline>
+        <source src="../视频素材/网页端视频.mp4" type="video/mp4">
+    </video>
+
+    <!-- 顶部导航 -->
+    <header class="top-bar">
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-fish-fins"></i>
+            </div>
+            <div class="brand-text">
+                <h1>种鱼数智管理平台</h1>
+                <span>SMART FISH FARMING</span>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <span class="nav-indicator" id="nav-indicator"></span>
+            <button class="nav-tab active" id="tab-dash" onclick="switchView('dash')">
+                <i class="fa-solid fa-chart-line"></i>数据驾驶舱
+            </button>
+            <button class="nav-tab" id="tab-analysis" onclick="switchView('analysis')">
+                <i class="fa-solid fa-chart-area"></i>趋势分析
+            </button>
+            <button class="nav-tab" id="tab-monitor" onclick="switchView('monitor')">
+                <i class="fa-solid fa-video"></i>视频监控
+            </button>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-pulse green" id="gw-status"></span>
+                <span>水质网关</span>
+            </div>
+            <div class="status-item">
+                <span class="status-pulse green" id="ai-status"></span>
+                <span>AI核心</span>
+            </div>
+            <div class="time-box" id="clock">00:00:00</div>
+            <button class="settings-btn" onclick="toggleModal()">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="main-content" id="dash-view">
+        <!-- 左侧指标 -->
+        <div class="card flex flex-col">
+            <div class="card-header">
+                <i class="fa-solid fa-water"></i>核心水质指标
+            </div>
+            <div class="flex-1">
+                <div class="metric-card" id="card-temp">
+                    <div class="metric-top">
+                        <span class="metric-name">水温</span>
+                        <div class="metric-icon"><i class="fa-solid fa-temperature-half"></i></div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="v-temp">--</span>
+                        <span class="metric-unit">°C</span>
+                    </div>
+                    <div class="metric-gauge" id="g-temp"></div>
+                </div>
+                <div class="metric-card" id="card-ph">
+                    <div class="metric-top">
+                        <span class="metric-name">pH值</span>
+                        <div class="metric-icon"><i class="fa-solid fa-vial"></i></div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="v-ph">--</span>
+                        <span class="metric-unit">pH</span>
+                    </div>
+                    <div class="metric-gauge" id="g-ph"></div>
+                </div>
+                <div class="metric-card" id="card-cod">
+                    <div class="metric-top">
+                        <span class="metric-name">COD</span>
+                        <div class="metric-icon"><i class="fa-solid fa-flask"></i></div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="v-cod">--</span>
+                        <span class="metric-unit">mg/L</span>
+                    </div>
+                    <div class="metric-gauge" id="g-cod"></div>
+                </div>
+                <div class="metric-card" id="card-nh3">
+                    <div class="metric-top">
+                        <span class="metric-name">氨氮</span>
+                        <div class="metric-icon"><i class="fa-solid fa-biohazard"></i></div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="v-nh3">--</span>
+                        <span class="metric-unit">ppm</span>
+                    </div>
+                    <div class="metric-gauge" id="g-nh3"></div>
+                </div>
+            </div>
+            <div class="progress-section">
+                <div class="progress-item">
+                    <div class="progress-head">
+                        <span class="progress-name">亚硝酸根 (NO₂⁻)</span>
+                        <span class="progress-val" id="v-no2">-- ppm</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="b-no2" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-head">
+                        <span class="progress-name">硝酸根 (NO₃⁻)</span>
+                        <span class="progress-val" id="v-no3">-- ppm</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="b-no3" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中间圆环 -->
+        <div class="card center-area">
+            <div class="card-header">
+                <i class="fa-solid fa-circle-notch"></i>水质健康评估
+            </div>
+            <div class="ring-section">
+                <div class="main-ring">
+                    <div id="main-ring" class="ring-chart"></div>
+                    <div class="ring-center">
+                        <div class="ring-score" id="health-score">--</div>
+                        <div class="ring-label">健康指数</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mini-rings">
+                <div class="mini-ring">
+                    <div id="ring-ec" class="mini-ring-chart"></div>
+                    <div class="mini-ring-label">电导率</div>
+                    <div class="mini-ring-value" id="v-ec">--</div>
+                </div>
+                <div class="mini-ring">
+                    <div id="ring-tds" class="mini-ring-chart"></div>
+                    <div class="mini-ring-label">TDS</div>
+                    <div class="mini-ring-value" id="v-tds">--</div>
+                </div>
+                <div class="mini-ring">
+                    <div id="ring-sal" class="mini-ring-chart"></div>
+                    <div class="mini-ring-label">盐度</div>
+                    <div class="mini-ring-value" id="v-sal">--</div>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-num" id="s-count">0</div>
+                    <div class="stat-text">在线传感器</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num" id="s-time">--:--</div>
+                    <div class="stat-text">最后更新</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧AI -->
+        <div class="card ai-section">
+            <div class="card-header">
+                <i class="fa-solid fa-robot"></i>DeepSeek AI
+                <span style="margin-left: auto; font-size: 11px; color: #64748b;">智能助手</span>
+                <button class="chat-clear-btn" onclick="clearChat()" title="清空对话" aria-label="清空对话">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+            <div class="chat-box" id="chat-box">
+                <div class="chat-msg ai">
+                    <i class="fa-solid fa-microchip" style="margin-right: 8px; color: #6366f1;"></i>
+                    您好！我是您的专属水产AI专家，已接入实时水质数据，可为您分析水质状况、预测风险、提供养殖建议。
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" class="chat-input" placeholder="输入水质问题..." onkeypress="if(event.key==='Enter')sendMsg()">
+                <button class="send-btn" onclick="sendMsg()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 趋势分析 -->
+    <main class="main-content analysis-content hidden" id="analysis-view">
+        <div class="card analysis-overview">
+            <div class="card-header">
+                <i class="fa-solid fa-chart-area"></i>趋势研判总览
+                <span style="margin-left: auto; font-size: 11px; color: #64748b;">实时滚动记录</span>
+            </div>
+            <div class="analysis-summary-grid">
+                <div class="analysis-tile">
+                    <div class="analysis-label">当前健康指数</div>
+                    <div class="analysis-value" id="ana-health">--</div>
+                    <div class="analysis-desc">综合 pH、氮盐、COD 与水温</div>
+                </div>
+                <div class="analysis-tile">
+                    <div class="analysis-label">趋势状态</div>
+                    <div class="analysis-value" id="ana-trend">等待</div>
+                    <div class="analysis-desc" id="ana-trend-desc">等待实时数据接入</div>
+                </div>
+                <div class="analysis-tile">
+                    <div class="analysis-label">主要风险</div>
+                    <div class="analysis-value" id="ana-risk">--</div>
+                    <div class="analysis-desc" id="ana-risk-desc">暂无异常指标</div>
+                </div>
+                <div class="analysis-tile">
+                    <div class="analysis-label">样本数量</div>
+                    <div class="analysis-value" id="ana-samples">0</div>
+                    <div class="analysis-desc">本机浏览器滚动缓存</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card analysis-chart-card">
+            <div class="card-header">
+                <i class="fa-solid fa-wave-square"></i>水质趋势曲线
+                <span style="margin-left: auto; font-size: 11px; color: #64748b;">健康指数 / pH / 氨氮 / COD</span>
+            </div>
+            <div class="analysis-chart" id="trend-chart"></div>
+        </div>
+
+        <div class="analysis-side-stack">
+            <div class="card analysis-side-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-triangle-exclamation"></i>风险分布
+                </div>
+                <div class="analysis-chart risk-chart" id="risk-chart"></div>
+            </div>
+
+            <div class="card analysis-side-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-brain"></i>AI 摘要
+                </div>
+                <div class="insight-panel">
+                    <div class="insight-title">今日研判</div>
+                    <div class="insight-text" id="ana-summary">等待水质网关接入后生成趋势研判。</div>
+                </div>
+                <div class="event-list" id="ana-events">
+                    <div class="event-item">
+                        <div class="event-dot"></div>
+                        <div>
+                            <div class="event-title">等待实时数据</div>
+                            <div class="event-desc">趋势页会在数据驾驶舱轮询时自动记录样本。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 视频监控 -->
+    <main class="main-content hidden" id="monitor-view">
+        <div class="card col-span-2 flex flex-col">
+            <div class="card-header">
+                <i class="fa-solid fa-video"></i>鱼塘现场监控
+            </div>
+            <div class="video-container flex-1">
+                <img id="video-img" class="video-img">
+            </div>
+            <div class="video-btns">
+                <button class="video-btn" onclick="reloadVideo()">
+                    <i class="fa-solid fa-rotate-right"></i> 重载画面
+                </button>
+                <button class="video-btn" onclick="openVideo()">
+                    <i class="fa-solid fa-external-link-alt"></i> 新窗口打开
+                </button>
+            </div>
+        </div>
+
+        <div class="card flex flex-col">
+            <div class="card-header">
+                <i class="fa-solid fa-circle-info"></i>监控信息
+            </div>
+            <div class="info-list" style="padding: 16px;">
+                <div class="info-item">
+                    <div class="info-label">视频源</div>
+                    <div class="info-value" id="cam-url" style="word-break: break-all;">未配置</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">视频格式</div>
+                    <div class="info-value">MJPEG Stream</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">连接状态</div>
+                    <div class="info-value" id="cam-stat" style="color: #6366f1;">等待连接</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 设置弹窗 -->
+    <div class="modal-bg" id="settings-modal">
+        <div class="modal-box">
+            <div class="modal-head">
+                <span class="modal-title"><i class="fa-solid fa-sliders-h"></i> 系统配置</span>
+                <button class="modal-close" onclick="toggleModal()"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">ESP32 水质网关地址</label>
+                <input type="text" id="cfg-gw" class="form-input" placeholder="http://192.168.x.x">
+                <div class="test-row">
+                    <button class="test-btn" onclick="testGw()">测试连接</button>
+                    <span class="test-result" id="test-gw"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">AI 后端地址</label>
+                <input type="text" id="cfg-ai" class="form-input" placeholder="http://127.0.0.1:8000">
+                <div class="test-row">
+                    <button class="test-btn" onclick="testAi()">测试连接</button>
+                    <span class="test-result" id="test-ai"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">视频流地址</label>
+                <input type="text" id="cfg-cam" class="form-input" placeholder="http://192.168.x.x:8080/?action=stream">
+                <div class="test-row">
+                    <button class="test-btn" onclick="testCam()">测试连接</button>
+                    <span class="test-result" id="test-cam"></span>
+                </div>
+            </div>
+            <button class="save-btn" onclick="saveConfig()">
+                <i class="fa-solid fa-save"></i> 保存配置
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let CFG = {
+            gw: localStorage.getItem('gwUrl') || 'http://192.0.2.10',
+            ai: localStorage.getItem('aiUrl') || 'http://127.0.0.1:8000',
+            cam: localStorage.getItem('cameraUrl') || 'http://192.0.2.10:8080/?action=stream'
+        };
+
+        let data = null;
+        let mainRing;
+        let gauges = {};
+        let analysisCharts = {};
+        const TREND_HISTORY_LIMIT = 72;
+        let trendHistory = loadTrendHistory();
+        const VIEW_NAMES = ['dash', 'analysis', 'monitor'];
+        let currentView = 'dash';
+        let isViewSwitching = false;
+        let viewIntroTimer = null;
+        let chatSessionId = 0;
+        const CHAT_WELCOME_TEXT = '您好！我是您的专属水产AI专家，已接入实时水质数据，可为您分析水质状况、预测风险、提供养殖建议。';
+
+        const META = {
+            temp: { max: 40, warn: 35, color: '#00f5ff' },
+            ph: { max: 14, warn: 9, color: '#19ffb0' },
+            cod: { max: 50, warn: 30, color: '#8b5cf6' },
+            nh3: { max: 2, warn: 0.5, color: '#ffd166' },
+            no2: { max: 0.2, warn: 0.1, color: '#ff4d6d' },
+            no3: { max: 40, warn: 25, color: '#19ffb0' },
+            ec: { max: 2500, color: '#00f5ff' },
+            tds: { max: 1200, color: '#2f7bff' },
+            sal: { max: 2, color: '#8b5cf6' }
+        };
+
+        function init() {
+            updateClock();
+            setInterval(updateClock, 1000);
+            initCharts();
+            loadConfig();
+            startPolling();
+            initPageMotion();
+        }
+
+        function updateClock() {
+            document.getElementById('clock').textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+        }
+
+        function initCharts() {
+            // 主圆环
+            mainRing = echarts.init(document.getElementById('main-ring'));
+            mainRing.setOption({
+                series: [{
+                    type: 'gauge',
+                    startAngle: 200,
+                    endAngle: -160,
+                    min: 0,
+                    max: 100,
+                    radius: '90%',
+                    center: ['50%', '50%'],
+                    z: 3,
+                    progress: {
+                        show: true,
+                        width: 20,
+                        roundCap: true,
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                                { offset: 0, color: '#19ffb0' },
+                                { offset: 0.5, color: '#00f5ff' },
+                                { offset: 1, color: '#2f7bff' }
+                            ]),
+                            shadowColor: '#00f5ff',
+                            shadowBlur: 26
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: { width: 20, color: [[1, 'rgba(0,245,255,0.08)']] }
+                    },
+                    anchor: { show: false },
+                    pointer: { show: false },
+                    axisTick: {
+                        show: true,
+                        splitNumber: 4,
+                        distance: -27,
+                        length: 5,
+                        lineStyle: { color: 'rgba(0,245,255,0.28)', width: 1 }
+                    },
+                    splitLine: {
+                        show: true,
+                        distance: -31,
+                        length: 12,
+                        lineStyle: { color: 'rgba(0,245,255,0.42)', width: 2 }
+                    },
+                    axisLabel: { show: false },
+                    detail: { show: false },
+                    data: [{ value: 0 }]
+                }, {
+                    type: 'gauge',
+                    startAngle: 200,
+                    endAngle: -160,
+                    min: 0,
+                    max: 100,
+                    radius: '68%',
+                    center: ['50%', '50%'],
+                    z: 1,
+                    axisLine: { show: false },
+                    anchor: { show: false },
+                    pointer: { show: false },
+                    axisTick: {
+                        show: true,
+                        splitNumber: 3,
+                        distance: 2,
+                        length: 5,
+                        lineStyle: { color: 'rgba(0,245,255,0.20)', width: 1 }
+                    },
+                    splitLine: { show: false },
+                    axisLabel: { show: false },
+                    detail: { show: false },
+                    data: [{ value: 100 }]
+                }]
+            });
+
+            // 小圆环
+            ['ec', 'tds', 'sal'].forEach(key => {
+                const el = document.getElementById('ring-' + key);
+                gauges[key] = echarts.init(el);
+                gauges[key].setOption(makeRingOption(key, 0));
+            });
+
+            // 仪表
+            ['temp', 'ph', 'cod', 'nh3'].forEach(key => {
+                const el = document.getElementById('g-' + key);
+                if (el) {
+                    gauges[key] = echarts.init(el);
+                    gauges[key].setOption(makeGaugeOption(key, 0));
+                }
+            });
+
+            initAnalysisCharts();
+
+            window.addEventListener('resize', () => {
+                updateNavIndicator(currentView);
+                mainRing.resize();
+                Object.values(gauges).forEach(c => c.resize());
+                Object.values(analysisCharts).forEach(c => c.resize());
+            });
+        }
+
+        function initAnalysisCharts() {
+            const trendEl = document.getElementById('trend-chart');
+            const riskEl = document.getElementById('risk-chart');
+            if (trendEl) analysisCharts.trend = echarts.init(trendEl);
+            if (riskEl) analysisCharts.risk = echarts.init(riskEl);
+            updateAnalysisCharts();
+        }
+
+        function makeRingOption(key, value) {
+            const meta = META[key];
+            const percent = Math.min(100, (value / meta.max) * 100);
+            const ringColor = new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                { offset: 0, color: '#19ffb0' },
+                { offset: 0.55, color: meta.color },
+                { offset: 1, color: '#00f5ff' }
+            ]);
+            return {
+                series: [{
+                    type: 'gauge',
+                    startAngle: 180,
+                    endAngle: 0,
+                    min: 0,
+                    max: 100,
+                    radius: '85%',
+                    center: ['50%', '70%'],
+                    progress: {
+                        show: true,
+                        width: 11,
+                        roundCap: true,
+                        itemStyle: { color: ringColor, shadowColor: meta.color, shadowBlur: 16 }
+                    },
+                    axisLine: { lineStyle: { width: 11, color: [[1, 'rgba(0,245,255,0.08)']] } },
+                    anchor: { show: false },
+                    pointer: { show: false },
+                    axisTick: {
+                        show: true,
+                        splitNumber: 3,
+                        distance: -13,
+                        length: 3,
+                        lineStyle: { color: 'rgba(0,245,255,0.24)', width: 1 }
+                    },
+                    splitLine: {
+                        show: true,
+                        distance: -14,
+                        length: 6,
+                        lineStyle: { color: 'rgba(0,245,255,0.34)', width: 1 }
+                    },
+                    axisLabel: { show: false },
+                    detail: { show: false },
+                    data: [{ value: percent }]
+                }]
+            };
+        }
+
+        function makeGaugeOption(key, value) {
+            const meta = META[key];
+            const gaugeColor = new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                { offset: 0, color: '#19ffb0' },
+                { offset: 0.5, color: meta.color },
+                { offset: 1, color: '#00f5ff' }
+            ]);
+            return {
+                series: [{
+                    type: 'gauge',
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: 0,
+                    max: meta.max,
+                    radius: '90%',
+                    center: ['50%', '65%'],
+                    progress: { show: true, width: 7, roundCap: true, itemStyle: { color: gaugeColor, shadowColor: meta.color, shadowBlur: 14 } },
+                    axisLine: { lineStyle: { width: 7, color: [[1, 'rgba(0,245,255,0.08)']] } },
+                    anchor: { show: false },
+                    pointer: { show: false },
+                    axisTick: {
+                        show: true,
+                        splitNumber: 4,
+                        distance: -10,
+                        length: 3,
+                        lineStyle: { color: 'rgba(0,245,255,0.22)', width: 1 }
+                    },
+                    splitLine: {
+                        show: true,
+                        distance: -12,
+                        length: 6,
+                        lineStyle: { color: 'rgba(0,245,255,0.30)', width: 1 }
+                    },
+                    axisLabel: { show: false },
+                    detail: { show: false },
+                    data: [{ value: value || 0 }]
+                }]
+            };
+        }
+
+        function loadConfig() {
+            document.getElementById('cfg-gw').value = CFG.gw;
+            document.getElementById('cfg-ai').value = CFG.ai;
+            document.getElementById('cfg-cam').value = CFG.cam;
+            applyVideo();
+        }
+
+        function startPolling() {
+            fetchData();
+            setInterval(fetchData, 5000);
+        }
+
+        async function fetchData() {
+            try {
+                const res = await fetch(CFG.gw.replace(/\/$/, '') + '/api/water/latest');
+                if (!res.ok) throw new Error();
+                const json = await res.json();
+                if (json.ok && json.data) {
+                    data = json.data;
+                    updateUI();
+                    document.getElementById('gw-status').className = 'status-pulse green';
+                }
+            } catch {
+                document.getElementById('gw-status').className = 'status-pulse red';
+            }
+        }
+
+        function calcHealth(m) {
+            let score = 100;
+            if (m.ph < 6 || m.ph > 9) score -= 20;
+            if (m.ammonia >= 0.5) score -= 25;
+            if (m.nitrite >= 0.1) score -= 20;
+            if (m.waterTemp > 35) score -= 15;
+            if (m.cod >= 30) score -= 20;
+            return Math.max(0, score);
+        }
+
+        function updateUI() {
+            const m = data.metrics || {};
+
+            // 主圆环
+            const health = calcHealth(m);
+            mainRing.setOption({ series: [{ data: [{ value: health }] }] });
+            document.getElementById('health-score').textContent = isNaN(health) ? '--' : health;
+            recordTrendSample(m, health);
+            updateAnalysisUI(m, health);
+
+            // 小圆环
+            const ec = Number(m.conductivity) || 0;
+            const tds = Number(m.tds) || 0;
+            const sal = Number(m.salinity) || 0;
+
+            ['ec', 'tds', 'sal'].forEach(key => {
+                const v = key === 'ec' ? ec : key === 'tds' ? tds : sal;
+                gauges[key].setOption(makeRingOption(key, v));
+                document.getElementById('v-' + key).textContent = isNaN(v) ? '--' : v.toFixed(key === 'sal' ? 2 : 0);
+            });
+
+            // 仪表
+            const vals = { temp: Number(m.waterTemp), ph: Number(m.ph), cod: Number(m.cod), nh3: Number(m.ammonia) };
+            ['temp', 'ph', 'cod', 'nh3'].forEach(key => {
+                const v = vals[key];
+                const disp = isNaN(v) ? '--' : (key === 'ph' ? v.toFixed(2) : v.toFixed(1));
+                document.getElementById('v-' + key).textContent = disp;
+                if (gauges[key]) gauges[key].setOption(makeGaugeOption(key, isNaN(v) ? 0 : v));
+            });
+
+            // 进度条
+            const no2 = Number(m.nitrite) || 0;
+            const no3 = Number(m.nitrate) || 0;
+            document.getElementById('v-no2').textContent = (isNaN(no2) ? '--' : no2.toFixed(2)) + ' ppm';
+            document.getElementById('v-no3').textContent = (isNaN(no3) ? '--' : no3.toFixed(2)) + ' ppm';
+            document.getElementById('b-no2').style.width = Math.min(100, (no2 / 0.2) * 100) + '%';
+            document.getElementById('b-no3').style.width = Math.min(100, (no3 / 40) * 100) + '%';
+
+            // 统计
+            document.getElementById('s-count').textContent = data.gateway?.onlineSensors || 0;
+            document.getElementById('s-time').textContent = data.updateTime?.split(':').slice(0, 2).join(':') || '--:--';
+        }
+
+        function readNumber(value) {
+            const number = Number(value);
+            return Number.isFinite(number) ? number : null;
+        }
+
+        function loadTrendHistory() {
+            try {
+                const parsed = JSON.parse(localStorage.getItem('waterTrendHistory') || '[]');
+                return Array.isArray(parsed) ? parsed.slice(-TREND_HISTORY_LIMIT) : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveTrendHistory() {
+            try {
+                localStorage.setItem('waterTrendHistory', JSON.stringify(trendHistory.slice(-TREND_HISTORY_LIMIT)));
+            } catch {}
+        }
+
+        function recordTrendSample(m, health) {
+            const now = Date.now();
+            const sample = {
+                ts: now,
+                time: new Date(now).toLocaleTimeString('zh-CN', { hour12: false }),
+                health: Number.isFinite(health) ? health : null,
+                ph: readNumber(m.ph),
+                cod: readNumber(m.cod),
+                ammonia: readNumber(m.ammonia),
+                nitrite: readNumber(m.nitrite),
+                nitrate: readNumber(m.nitrate),
+                waterTemp: readNumber(m.waterTemp),
+                online: data?.gateway?.onlineSensors || 0
+            };
+
+            const last = trendHistory[trendHistory.length - 1];
+            if (last && now - last.ts < 3500) {
+                trendHistory[trendHistory.length - 1] = sample;
+            } else {
+                trendHistory.push(sample);
+            }
+            trendHistory = trendHistory.slice(-TREND_HISTORY_LIMIT);
+            saveTrendHistory();
+        }
+
+        function metricRiskPercent(key, value) {
+            if (!Number.isFinite(value)) return 0;
+            if (key === 'ph') {
+                if (value >= 6 && value <= 9) return 12;
+                return Math.min(100, Math.abs(value - 7.5) / 3.5 * 100);
+            }
+            const warnMap = { cod: 30, ammonia: 0.5, nitrite: 0.1, nitrate: 25, waterTemp: 35 };
+            const warn = warnMap[key] || 1;
+            return Math.min(100, Math.round((value / warn) * 100));
+        }
+
+        function getRiskItems(m) {
+            const items = [];
+            const ph = readNumber(m.ph);
+            const cod = readNumber(m.cod);
+            const ammonia = readNumber(m.ammonia);
+            const nitrite = readNumber(m.nitrite);
+            const nitrate = readNumber(m.nitrate);
+            const temp = readNumber(m.waterTemp);
+            if (Number.isFinite(ph) && (ph < 6 || ph > 9)) items.push({ name: 'pH 异常', desc: `当前 ${ph.toFixed(2)} pH，建议复核酸碱度。` });
+            if (Number.isFinite(ammonia) && ammonia >= 0.5) items.push({ name: '氨氮偏高', desc: `当前 ${ammonia.toFixed(3)} ppm，建议先减料并加强增氧。` });
+            if (Number.isFinite(nitrite) && nitrite >= 0.1) items.push({ name: '亚硝酸根预警', desc: `当前 ${nitrite.toFixed(3)} ppm，关注硝化系统稳定性。` });
+            if (Number.isFinite(nitrate) && nitrate >= 25) items.push({ name: '硝酸根累积', desc: `当前 ${nitrate.toFixed(2)} ppm，可结合换水计划处理。` });
+            if (Number.isFinite(cod) && cod >= 30) items.push({ name: 'COD 负载偏高', desc: `当前 ${cod.toFixed(2)} mg/L，注意残饵和有机物累积。` });
+            if (Number.isFinite(temp) && temp > 35) items.push({ name: '水温偏高', desc: `当前 ${temp.toFixed(1)} °C，注意应激和溶氧压力。` });
+            return items;
+        }
+
+        function getTrendStatus() {
+            const valid = trendHistory.filter(item => Number.isFinite(item.health));
+            if (valid.length < 2) return { label: '等待', desc: '等待更多样本' };
+            const first = valid[Math.max(0, valid.length - 6)];
+            const last = valid[valid.length - 1];
+            const delta = last.health - first.health;
+            if (delta >= 4) return { label: '向好', desc: `健康指数较前段 +${delta.toFixed(0)}` };
+            if (delta <= -4) return { label: '走低', desc: `健康指数较前段 ${delta.toFixed(0)}` };
+            return { label: '平稳', desc: '健康指数波动较小' };
+        }
+
+        function updateAnalysisUI(m = data?.metrics || {}, health = null) {
+            const validSamples = trendHistory.filter(item => Number.isFinite(item.health));
+            const trend = getTrendStatus();
+            const risks = getRiskItems(m);
+            const healthText = Number.isFinite(health) ? String(health) : (validSamples.length ? String(validSamples[validSamples.length - 1].health) : '--');
+            const mainRisk = risks[0];
+
+            document.getElementById('ana-health').textContent = healthText;
+            document.getElementById('ana-trend').textContent = trend.label;
+            document.getElementById('ana-trend-desc').textContent = trend.desc;
+            document.getElementById('ana-risk').textContent = mainRisk ? mainRisk.name.replace('预警', '') : '平稳';
+            document.getElementById('ana-risk-desc').textContent = mainRisk ? mainRisk.desc : '暂无异常指标';
+            document.getElementById('ana-samples').textContent = String(validSamples.length);
+            document.getElementById('ana-summary').textContent = buildAnalysisSummary(health, risks, trend);
+            renderAnalysisEvents(risks);
+            updateAnalysisCharts(m);
+        }
+
+        function buildAnalysisSummary(health, risks, trend) {
+            if (!Number.isFinite(health) && !trendHistory.length) {
+                return '等待水质网关接入后生成趋势研判。';
+            }
+            if (risks.length) {
+                return `当前健康指数 ${Number.isFinite(health) ? health : '--'}，趋势${trend.label}。优先关注${risks[0].name}，建议结合现场复测后再执行投喂、增氧或换水操作。`;
+            }
+            return `当前健康指数 ${Number.isFinite(health) ? health : '--'}，趋势${trend.label}。核心指标暂未触发明显预警，建议保持常规巡检并继续观察氮盐变化。`;
+        }
+
+        function renderAnalysisEvents(risks) {
+            const list = document.getElementById('ana-events');
+            const events = risks.length ? risks : [
+                { name: '状态平稳', desc: '暂无明显异常项，继续保持自动轮询。' },
+                { name: '趋势记录', desc: '页面会保存最近一段水质快照，用于观察短时变化。' }
+            ];
+            list.innerHTML = events.slice(0, 4).map((item, index) => `
+                <div class="event-item">
+                    <div class="event-dot ${risks.length && index === 0 ? 'warn' : ''}"></div>
+                    <div>
+                        <div class="event-title">${item.name}</div>
+                        <div class="event-desc">${item.desc}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateAnalysisCharts(m = data?.metrics || {}) {
+            if (!analysisCharts.trend || !analysisCharts.risk) return;
+            const times = trendHistory.map(item => item.time);
+            const hasTrend = trendHistory.some(item => Number.isFinite(item.health));
+            analysisCharts.trend.setOption({
+                color: ['#00f5ff', '#19ffb0', '#ffd166', '#8b5cf6'],
+                title: hasTrend ? { show: false } : {
+                    text: '等待实时数据接入',
+                    left: 'center',
+                    top: 'middle',
+                    textStyle: { color: 'rgba(223,252,255,0.72)', fontSize: 14, fontWeight: 500 }
+                },
+                tooltip: { trigger: 'axis', backgroundColor: 'rgba(3,12,28,0.92)', borderColor: 'rgba(0,245,255,0.28)', textStyle: { color: '#dffcff' } },
+                legend: { top: 4, textStyle: { color: 'rgba(223,252,255,0.78)' } },
+                grid: { left: 46, right: 24, top: 56, bottom: 36 },
+                xAxis: { type: 'category', data: times, axisLabel: { color: 'rgba(223,252,255,0.62)' }, axisLine: { lineStyle: { color: 'rgba(0,245,255,0.18)' } } },
+                yAxis: { type: 'value', axisLabel: { color: 'rgba(223,252,255,0.62)' }, splitLine: { lineStyle: { color: 'rgba(0,245,255,0.08)' } } },
+                series: [
+                    {
+                        name: '健康指数',
+                        type: 'line',
+                        smooth: true,
+                        showSymbol: false,
+                        data: trendHistory.map(item => item.health),
+                        lineStyle: { width: 3, color: '#00f5ff', shadowBlur: 12, shadowColor: 'rgba(0,245,255,0.55)' },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(0,245,255,0.26)' },
+                                { offset: 1, color: 'rgba(0,245,255,0)' }
+                            ])
+                        }
+                    },
+                    {
+                        name: 'pH',
+                        type: 'line',
+                        smooth: true,
+                        showSymbol: false,
+                        yAxisIndex: 0,
+                        data: trendHistory.map(item => item.ph),
+                        lineStyle: { width: 2, color: '#19ffb0', shadowBlur: 8, shadowColor: 'rgba(25,255,176,0.35)' }
+                    },
+                    {
+                        name: '氨氮',
+                        type: 'line',
+                        smooth: true,
+                        showSymbol: false,
+                        data: trendHistory.map(item => item.ammonia),
+                        lineStyle: { width: 2, color: '#ffd166', shadowBlur: 8, shadowColor: 'rgba(255,209,102,0.28)' }
+                    },
+                    {
+                        name: 'COD',
+                        type: 'line',
+                        smooth: true,
+                        showSymbol: false,
+                        data: trendHistory.map(item => item.cod),
+                        lineStyle: { width: 2, color: '#8b5cf6', shadowBlur: 8, shadowColor: 'rgba(139,92,246,0.30)' }
+                    }
+                ]
+            });
+
+            const riskData = [
+                { name: 'pH', value: metricRiskPercent('ph', readNumber(m.ph)) },
+                { name: 'COD', value: metricRiskPercent('cod', readNumber(m.cod)) },
+                { name: '氨氮', value: metricRiskPercent('ammonia', readNumber(m.ammonia)) },
+                { name: '亚硝酸根', value: metricRiskPercent('nitrite', readNumber(m.nitrite)) },
+                { name: '硝酸根', value: metricRiskPercent('nitrate', readNumber(m.nitrate)) }
+            ];
+            analysisCharts.risk.setOption({
+                grid: { left: 72, right: 22, top: 20, bottom: 22 },
+                tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, backgroundColor: 'rgba(3,12,28,0.92)', borderColor: 'rgba(0,245,255,0.28)', textStyle: { color: '#dffcff' } },
+                xAxis: { type: 'value', max: 100, axisLabel: { color: 'rgba(223,252,255,0.62)' }, splitLine: { lineStyle: { color: 'rgba(0,245,255,0.08)' } } },
+                yAxis: { type: 'category', data: riskData.map(item => item.name), axisLabel: { color: 'rgba(223,252,255,0.78)' }, axisLine: { show: false }, axisTick: { show: false } },
+                series: [{
+                    type: 'bar',
+                    showBackground: true,
+                    backgroundStyle: { color: 'rgba(0,245,255,0.05)', borderRadius: 999 },
+                    data: riskData.map(item => item.value),
+                    barWidth: 14,
+                    itemStyle: {
+                        borderRadius: 999,
+                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                            { offset: 0, color: '#19ffb0' },
+                            { offset: 0.62, color: '#00f5ff' },
+                            { offset: 1, color: '#ff4d6d' }
+                        ])
+                    }
+                }]
+            });
+        }
+
+        function prefersReducedMotion() {
+            return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+
+        function initPageMotion() {
+            VIEW_NAMES.forEach(name => {
+                const view = document.getElementById(name + '-view');
+                if (view) view.classList.toggle('hidden', name !== currentView);
+            });
+            updateNavState(currentView);
+            setTimeout(() => updateNavIndicator(currentView), 250);
+            window.addEventListener('load', () => updateNavIndicator(currentView));
+            requestAnimationFrame(() => playViewIntro(document.getElementById(currentView + '-view')));
+        }
+
+        function updateNavState(viewName) {
+            document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+            const tab = document.getElementById('tab-' + viewName);
+            if (tab) tab.classList.add('active');
+            updateNavIndicator(viewName);
+        }
+
+        function updateNavIndicator(viewName) {
+            const indicator = document.getElementById('nav-indicator');
+            const tab = document.getElementById('tab-' + viewName);
+            const tabs = document.querySelector('.nav-tabs');
+            if (!indicator || !tab || !tabs) return;
+            const tabRect = tab.getBoundingClientRect();
+            const tabsRect = tabs.getBoundingClientRect();
+            indicator.style.width = tabRect.width + 'px';
+            indicator.style.transform = 'translateX(' + (tabRect.left - tabsRect.left) + 'px)';
+        }
+
+        function getRevealItems(viewEl) {
+            if (!viewEl) return [];
+            const selectors = [
+                ':scope > .card',
+                ':scope > .analysis-side-stack > .card',
+                '.metric-card',
+                '.analysis-tile',
+                '.mini-ring',
+                '.stat-item',
+                '.event-item'
+            ].join(',');
+            return Array.from(new Set(Array.from(viewEl.querySelectorAll(selectors))));
+        }
+
+        function playViewIntro(viewEl) {
+            if (!viewEl) return;
+            const items = getRevealItems(viewEl);
+            items.forEach((el, index) => {
+                el.classList.add('reveal-item');
+                el.style.setProperty('--reveal-delay', Math.min(index * 42, 320) + 'ms');
+            });
+            viewEl.classList.remove('view-intro');
+            void viewEl.offsetWidth;
+            viewEl.classList.add('view-intro');
+            clearTimeout(viewIntroTimer);
+            viewIntroTimer = setTimeout(() => {
+                viewEl.classList.remove('view-intro');
+            }, prefersReducedMotion() ? 0 : 920);
+        }
+
+        function runViewSideEffects(viewName) {
+            if (viewName === 'analysis') updateAnalysisUI();
+            if (viewName === 'monitor') applyVideo();
+            setTimeout(() => {
+                mainRing.resize();
+                Object.values(gauges).forEach(c => c.resize());
+                Object.values(analysisCharts).forEach(c => c.resize());
+            }, prefersReducedMotion() ? 0 : 90);
+        }
+
+        function switchView(v) {
+            if (!VIEW_NAMES.includes(v) || isViewSwitching) return;
+            updateNavState(v);
+            if (v === currentView) {
+                playViewIntro(document.getElementById(v + '-view'));
+                return;
+            }
+
+            const oldView = document.getElementById(currentView + '-view');
+            const nextView = document.getElementById(v + '-view');
+            if (!oldView || !nextView) return;
+
+            isViewSwitching = true;
+            oldView.classList.remove('view-enter', 'view-intro');
+            oldView.classList.add('view-leave');
+
+            setTimeout(() => {
+                oldView.classList.add('hidden');
+                oldView.classList.remove('view-leave');
+
+                nextView.classList.remove('hidden', 'view-leave', 'view-intro');
+                nextView.classList.add('view-enter');
+                currentView = v;
+                runViewSideEffects(v);
+
+                requestAnimationFrame(() => {
+                    nextView.classList.remove('view-enter');
+                    playViewIntro(nextView);
+                    isViewSwitching = false;
+                });
+            }, prefersReducedMotion() ? 0 : 210);
+        }
+
+        async function sendMsg() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            const sessionId = chatSessionId;
+
+            addBubble('user', text);
+            input.value = '';
+            addLoading();
+
+            try {
+                const res = await fetch(CFG.ai.replace(/\/$/, '') + '/api/ai/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: text, waterData: data || {}, messages: [] })
+                });
+                removeLoading();
+                if (sessionId !== chatSessionId) return;
+                if (!res.ok) throw new Error();
+                const json = await res.json();
+                if (json.ok && json.answer) {
+                    addBubble('ai', json.answer);
+                    document.getElementById('ai-status').className = 'status-pulse green';
+                } else {
+                    addBubble('ai', '解析响应失败');
+                }
+            } catch {
+                removeLoading();
+                if (sessionId !== chatSessionId) return;
+                addBubble('ai', 'AI服务暂时不可用');
+                document.getElementById('ai-status').className = 'status-pulse red';
+            }
+        }
+
+        function clearChat() {
+            chatSessionId += 1;
+            const input = document.getElementById('chat-input');
+            const box = document.getElementById('chat-box');
+            if (input) input.value = '';
+            if (!box) return;
+            box.innerHTML = '';
+            addWelcomeBubble();
+            const aiStatus = document.getElementById('ai-status');
+            if (aiStatus) aiStatus.className = 'status-pulse green';
+        }
+
+        function addBubble(role, text) {
+            const box = document.getElementById('chat-box');
+            const div = document.createElement('div');
+            div.className = 'chat-msg ' + role;
+            appendMessageText(div, text);
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function addWelcomeBubble() {
+            const box = document.getElementById('chat-box');
+            const div = document.createElement('div');
+            div.className = 'chat-msg ai';
+            const icon = document.createElement('i');
+            icon.className = 'fa-solid fa-microchip';
+            icon.style.marginRight = '8px';
+            icon.style.color = '#6366f1';
+            div.appendChild(icon);
+            appendMessageText(div, CHAT_WELCOME_TEXT);
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function appendMessageText(target, text) {
+            String(text || '').split('\n').forEach((line, index) => {
+                if (index > 0) target.appendChild(document.createElement('br'));
+                target.appendChild(document.createTextNode(line));
+            });
+        }
+
+        function addLoading() {
+            const box = document.getElementById('chat-box');
+            const div = document.createElement('div');
+            div.id = 'loading-msg';
+            div.className = 'chat-msg loading';
+            div.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> AI思考中...';
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function removeLoading() {
+            const el = document.getElementById('loading-msg');
+            if (el) el.remove();
+        }
+
+        function applyVideo() {
+            const img = document.getElementById('video-img');
+            const camUrl = document.getElementById('cam-url');
+            const camStat = document.getElementById('cam-stat');
+            camUrl.textContent = CFG.cam || '未配置';
+
+            if (!CFG.cam) {
+                img.removeAttribute('src');
+                img.style.display = 'none';
+                camStat.textContent = '未配置';
+                return;
+            }
+
+            img.onload = () => {
+                camStat.textContent = '已连接';
+            };
+
+            img.onerror = () => {
+                img.style.display = 'none';
+                camStat.textContent = '连接失败';
+            };
+
+            img.src = CFG.cam;
+            img.style.display = 'block';
+            camStat.textContent = '连接中';
+        }
+
+        function reloadVideo() {
+            if (!CFG.cam) {
+                applyVideo();
+                return;
+            }
+            const img = document.getElementById('video-img');
+            img.src = CFG.cam + (CFG.cam.includes('?') ? '&' : '?') + '_=' + Date.now();
+        }
+
+        function openVideo() {
+            if (CFG.cam) window.open(CFG.cam, '_blank');
+        }
+
+        function toggleModal() {
+            document.getElementById('settings-modal').classList.toggle('show');
+        }
+
+        async function testGw() {
+            const el = document.getElementById('test-gw');
+            el.textContent = '测试中...';
+            try {
+                await fetch(document.getElementById('cfg-gw').value + '/api/water/latest');
+                el.textContent = '✓ 成功';
+                el.className = 'test-result ok';
+            } catch {
+                el.textContent = '✗ 失败';
+                el.className = 'test-result fail';
+            }
+        }
+
+        async function testAi() {
+            const el = document.getElementById('test-ai');
+            el.textContent = '测试中...';
+            try {
+                await fetch(document.getElementById('cfg-ai').value + '/health');
+                el.textContent = '✓ 成功';
+                el.className = 'test-result ok';
+            } catch {
+                el.textContent = '✗ 失败';
+                el.className = 'test-result fail';
+            }
+        }
+
+        function testCam() {
+            const el = document.getElementById('test-cam');
+            el.textContent = '测试中...';
+            const img = new Image();
+            img.onload = () => { el.textContent = '✓ 成功'; el.className = 'test-result ok'; };
+            img.onerror = () => { el.textContent = '✗ 失败'; el.className = 'test-result fail'; };
+            img.src = document.getElementById('cfg-cam').value;
+        }
+
+        function saveConfig() {
+            CFG.gw = document.getElementById('cfg-gw').value;
+            CFG.ai = document.getElementById('cfg-ai').value;
+            CFG.cam = document.getElementById('cfg-cam').value;
+            localStorage.setItem('gwUrl', CFG.gw);
+            localStorage.setItem('aiUrl', CFG.ai);
+            localStorage.setItem('cameraUrl', CFG.cam);
+            toggleModal();
+            applyVideo();
+        }
+
+        init();
+    </script>
+</body>
+</html>
+

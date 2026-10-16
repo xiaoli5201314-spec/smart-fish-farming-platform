@@ -1,0 +1,158 @@
+<view class="page page-motion {{pageEnter ? 'page-enter' : ''}}">
+  <view class="ambient">
+    <view class="water-band band-a"></view>
+    <view class="water-band band-b"></view>
+    <view class="scan-beam"></view>
+    <view class="bubble bubble-a"></view>
+    <view class="bubble bubble-b"></view>
+    <view class="bubble bubble-c"></view>
+  </view>
+
+  <view class="hero">
+    <view class="hero-head">
+      <view class="hero-title-wrap">
+        <text class="kicker">AQUA ASSISTANT</text>
+        <text class="title">智能分析</text>
+        <text class="subtitle">风险研判与养殖建议</text>
+      </view>
+      <view class="online-pill">
+        <view class="online-dot"></view>
+        <text>{{assistantState}}</text>
+      </view>
+    </view>
+
+  </view>
+
+  <view class="assistant-card">
+    <view class="assistant-head">
+      <view class="assistant-title-wrap">
+        <text class="assistant-title">诊断对话</text>
+        <view class="feature-badge ai-badge">
+          <text class="feature-icon">🤖</text>
+          <text>AI诊断</text>
+        </view>
+      </view>
+      <view class="assistant-actions">
+        <view class="assistant-chip">
+          <view class="assistant-chip-dot"></view>
+          <text>{{assistantChipText}}</text>
+        </view>
+        <view class="assistant-button-row">
+          <button class="config-btn" bindtap="toggleAiConfig" hover-class="tap-soft" hover-stay-time="90">设置</button>
+          <button class="clear-btn" bindtap="clearChat" hover-class="tap-soft" hover-stay-time="90">清空</button>
+        </view>
+      </view>
+    </view>
+
+    <view class="ai-config-panel" wx:if="{{aiConfigOpen}}">
+      <view class="ai-field-card">
+        <text class="ai-field-label">AI服务地址</text>
+        <input
+          class="ai-field-input"
+          value="{{aiApiUrl}}"
+          placeholder="IP 或完整地址"
+          placeholder-class="input-placeholder"
+          bindinput="onAiUrlInput"
+        />
+      </view>
+      <view class="ai-config-actions">
+        <button class="ai-config-btn primary" bindtap="saveAiConfig" hover-class="tap-scale" hover-stay-time="90">保存地址</button>
+        <button class="ai-config-btn" bindtap="testAiService" hover-class="tap-scale" hover-stay-time="90">测试连接</button>
+      </view>
+      <view class="ai-config-status">
+        <text class="ai-config-label">连接状态</text>
+        <text class="ai-config-value">{{aiConfigState}}</text>
+      </view>
+    </view>
+
+    <view class="quick-list">
+      <button
+        class="quick-btn"
+        wx:for="{{quickQuestions}}"
+        wx:key="index"
+        data-question="{{item}}"
+        bindtap="askQuick"
+        hover-class="tap-soft"
+        hover-stay-time="90"
+      >
+        {{item}}
+      </button>
+    </view>
+
+    <scroll-view class="chat-list" scroll-y>
+      <view
+        wx:for="{{messages}}"
+        wx:key="index"
+        class="message {{item.role}} {{item.thinking ? 'thinking' : ''}}"
+      >
+        <block wx:if="{{item.thinking}}">
+          <text>{{item.text}}</text>
+          <view class="thinking-dots">
+            <view></view>
+            <view></view>
+            <view></view>
+          </view>
+        </block>
+        <text wx:else>{{item.text}}</text>
+      </view>
+    </scroll-view>
+
+    <view class="chat-input-row">
+      <input
+        value="{{inputValue}}"
+        placeholder="输入水质问题"
+        placeholder-class="input-placeholder"
+        bindinput="onInput"
+        bindconfirm="sendQuestion"
+        confirm-type="send"
+      />
+      <button class="send-btn {{thinking ? 'disabled' : ''}}" bindtap="sendQuestion" hover-class="tap-soft" hover-stay-time="90">
+        {{thinking ? '分析中' : '发送'}}
+      </button>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <view>
+        <text class="section-title">关键指标</text>
+      </view>
+      <text class="section-tag">更新 {{lastUpdateText}}</text>
+    </view>
+
+    <view class="metric-list">
+      <view class="metric-row" wx:for="{{metrics}}" wx:key="name" hover-class="tap-soft" hover-stay-time="90">
+        <view class="metric-main">
+          <view class="metric-title-row">
+            <text class="metric-name">{{item.name}}</text>
+            <text class="metric-state">{{item.state}}</text>
+          </view>
+          <view class="metric-track">
+            <view class="metric-fill {{item.tone}}" style="width: {{item.percent}}%;"></view>
+          </view>
+        </view>
+        <view class="metric-value-wrap">
+          <text class="metric-value">{{item.value}}</text>
+          <text class="metric-unit">{{item.unit}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section advice-section">
+    <view class="section-head">
+      <view>
+        <text class="section-title">智能建议</text>
+      </view>
+      <text class="section-tag">策略</text>
+    </view>
+
+    <view class="advice-list">
+      <view class="advice-item" wx:for="{{actions}}" wx:key="index">
+        <view class="advice-index">{{index + 1}}</view>
+        <text class="advice-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+</view>
